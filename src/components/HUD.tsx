@@ -5,13 +5,40 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  AlertOctagon,
+  AlertTriangle,
+  BarChart3,
+  Car,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  ClipboardList,
+  Clock,
+  Dna,
+  FlaskConical,
+  HelpCircle,
+  Lock,
+  Moon,
+  Pause,
+  Play,
+  ScrollText,
+  Shield,
+  Sparkles,
+  Sprout,
+  Sun,
+  Users,
+  Volume2,
+  VolumeX,
+  X,
+} from 'lucide-react';
+import {
   CostCardSpec,
   GameState,
   GardenState,
   ModuleCategory,
   ModuleTypeId,
 } from '../types/game';
-import { MODULE_CATALOG, SCENARIOS } from '../game/modulesData';
+import { MODULE_CATALOG } from '../game/modulesData';
 import {
   CoreMeterDisplay,
   SESSION_LENGTH_PRESETS,
@@ -79,27 +106,50 @@ interface HUDProps {
 }
 
 const meterBorderClass: Record<'green' | 'yellow' | 'red', string> = {
-  green: 'border-emerald-500/40 bg-emerald-950/20',
-  yellow: 'border-amber-500/50 bg-amber-950/25',
-  red: 'border-rose-500/70 bg-rose-950/35',
+  green: 'border-[#eef0f5]/[0.08] bg-[#0b0d14]',
+  yellow: 'border-[#e5a93b]/40 bg-[#0b0d14]',
+  red: 'border-[#e5484d]/55 bg-[#0b0d14]',
 };
 
 const meterBadgeClass: Record<'green' | 'yellow' | 'red', string> = {
-  green: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-  yellow: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-  red: 'bg-rose-500/25 text-rose-200 border-rose-500/50',
+  green: 'bg-[#4cc38a]/10 text-[#4cc38a] border-[#4cc38a]/25',
+  yellow: 'bg-[#e5a93b]/15 text-[#e5a93b] border-[#e5a93b]/35',
+  red: 'bg-[#e5484d]/15 text-[#e5484d] border-[#e5484d]/40',
 };
 
 const meterBarClass: Record<'green' | 'yellow' | 'red', string> = {
-  green: 'bg-emerald-400',
-  yellow: 'bg-amber-400',
-  red: 'bg-rose-500',
+  green: 'bg-[#4cc38a]',
+  yellow: 'bg-[#e5a93b]',
+  red: 'bg-[#e5484d]',
 };
 
 const meterDotClass: Record<'green' | 'yellow' | 'red', string> = {
-  green: 'bg-emerald-400',
-  yellow: 'bg-amber-400 animate-pulse',
-  red: 'bg-rose-400 animate-ping',
+  green: 'bg-[#4cc38a]',
+  yellow: 'bg-[#e5a93b]',
+  red: 'bg-[#e5484d]',
+};
+
+const METER_READABLE_LABELS: Record<CoreMeterDisplay['id'], string> = {
+  power: 'Power',
+  life_support: 'Life support',
+  food: 'Food',
+  shield: 'Shield',
+};
+
+function toSentenceStatus(label: string): string {
+  const lower = label.trim().toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
+
+const CATEGORY_LABELS: Record<ModuleCategory | 'all', string> = {
+  all: 'All',
+  power: 'Power',
+  life_support: 'Life support',
+  food: 'Food',
+  shield: 'Shield',
+  resource: 'Resource',
+  command: 'Command',
+  research: 'Research',
 };
 
 export const HUD: React.FC<HUDProps> = ({
@@ -211,7 +261,6 @@ export const HUD: React.FC<HUDProps> = ({
     return () => window.clearTimeout(timer);
   }, [criticalNotice]);
 
-  // Build dock shows 10 core items + unlocked Science Lab/Fusion when researched
   const dockModuleIds = (Object.keys(MODULE_CATALOG) as ModuleTypeId[]).filter((id) => {
     const def = MODULE_CATALOG[id];
     const showInDock = def.inBuildDock || id === 'science_lab' || id === 'fusion_reactor';
@@ -220,6 +269,12 @@ export const HUD: React.FC<HUDProps> = ({
   });
 
   const nextUpcomingEvents = state.upcomingEvents.filter((e) => !e.resolved).slice(0, 2);
+
+  const renderStatusIcon = (status: ResourcePulseColor) => {
+    if (status === 'green') return <Check className="w-3 h-3 shrink-0" strokeWidth={1.5} />;
+    if (status === 'yellow') return <AlertTriangle className="w-3 h-3 shrink-0" strokeWidth={1.5} />;
+    return <AlertOctagon className="w-3 h-3 shrink-0" strokeWidth={1.5} />;
+  };
 
   const renderCoreMeterCard = (m: CoreMeterDisplay, extra?: React.ReactNode) => {
     const isMonitored = m.id === 'power' || m.id === 'life_support' || m.id === 'food';
@@ -230,41 +285,41 @@ export const HUD: React.FC<HUDProps> = ({
         key={m.id}
         data-testid={`core-meter-${m.id}`}
         data-resource-status={m.status}
-        className={`rounded-xl border p-2.5 space-y-1.5 transition-colors ${meterBorderClass[m.status]} ${pulseClass}`}
+        className={`rounded-xl border p-3 space-y-2 transition-colors duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${meterBorderClass[m.status]} ${pulseClass}`}
       >
-        <div className="flex items-center justify-between gap-1.5">
-          <div className="flex items-center gap-1.5 min-w-0">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             <span
               aria-hidden="true"
-              className={`w-2 h-2 rounded-full shrink-0 ${meterDotClass[m.status]}`}
+              className={`w-1.5 h-1.5 rounded-full shrink-0 ${meterDotClass[m.status]}`}
             />
-            <span className="text-[11px] font-mono font-bold text-white tracking-wide truncate">
-              {m.label}
+            <span className="text-xs font-sans font-medium text-[#eef0f5] truncate">
+              {METER_READABLE_LABELS[m.id]}
             </span>
           </div>
           <span
-            className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[9px] font-mono font-bold shrink-0 ${meterBadgeClass[m.status]}`}
+            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-xs font-mono shrink-0 ${meterBadgeClass[m.status]}`}
           >
-            <span aria-hidden="true">{m.statusIcon}</span>
-            <span>{m.statusLabel}</span>
+            {renderStatusIcon(m.status)}
+            <span>{toSentenceStatus(m.statusLabel)}</span>
           </span>
         </div>
 
-        <div className="flex items-baseline justify-between gap-1 text-xs font-mono">
-          <span className="text-slate-100 font-bold tabular-nums truncate">{m.amountText}</span>
-          <span className="text-[10px] text-cyan-300 tabular-nums shrink-0">{m.changePerSolText}</span>
+        <div className="flex items-baseline justify-between gap-2 text-xs font-mono">
+          <span className="text-[#eef0f5] font-medium tabular-nums truncate">{m.amountText}</span>
+          <span className="text-[#a3a9b8] tabular-nums shrink-0">{m.changePerSolText}</span>
         </div>
 
-        <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+        <div className="w-full bg-[#1a1e28] h-1.5 rounded-full overflow-hidden">
           <div
-            className={`h-full transition-all ${meterBarClass[m.status]}`}
+            className={`h-full transition-[width] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${meterBarClass[m.status]}`}
             style={{ width: `${Math.max(4, Math.min(100, m.pct))}%` }}
           />
         </div>
 
-        <div className="flex items-center justify-between text-[10px] font-mono text-slate-300">
-          <span>Remaining:</span>
-          <span className="font-semibold text-white tabular-nums">{m.solsRemainingText}</span>
+        <div className="flex items-center justify-between text-xs font-mono text-[#7a8296]">
+          <span>Remaining</span>
+          <span className="text-[#eef0f5] tabular-nums">{m.solsRemainingText}</span>
         </div>
         {extra}
       </div>
@@ -272,63 +327,71 @@ export const HUD: React.FC<HUDProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-3 sm:p-4 select-none">
+    <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-4 select-none">
       {/* 1. TOP PERIMETER BAR */}
-      <div className="relative z-10 flex items-start justify-between gap-2.5 flex-wrap xl:flex-nowrap">
-        {/* Top-Left: Site Cycle, Sols, Weather & Upcoming Event Timeline */}
-        <div className="pointer-events-auto bg-slate-900/92 border border-slate-800 rounded-xl px-3 py-2 shadow-lg shrink-0 space-y-1 max-w-xs">
+      <div className="relative z-10 flex items-start justify-between gap-3 flex-wrap xl:flex-nowrap">
+        {/* Top-Left: Site Cycle, Sols, DONKI Telemetry & Upcoming Events */}
+        <div className="pointer-events-auto bg-[#11141c]/95 border border-[#eef0f5]/[0.08] rounded-xl px-3 py-2.5 shrink-0 space-y-1.5 max-w-xs">
           <div className="flex items-center gap-2 whitespace-nowrap">
             <span
-              className={`w-2 h-2 rounded-full shrink-0 ${
-                state.planet === 'moon' ? 'bg-slate-300' : 'bg-amber-500'
+              className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                state.planet === 'moon' ? 'bg-[#a3a9b8]' : 'bg-[#e5a93b]'
               }`}
+              aria-hidden="true"
             />
-            <span className="text-[11px] font-bold font-mono tracking-wider text-white uppercase">
-              {state.planet === 'moon' ? 'MOON · SHACKLETON CRATER' : 'MARS · JEZERO CRATER'}
+            <span className="text-xs font-medium font-sans text-[#eef0f5]">
+              {state.planet === 'moon' ? 'Moon · Shackleton Crater' : 'Mars · Jezero Crater'}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[11px] text-slate-300 font-mono whitespace-nowrap">
-            <span className="text-cyan-400 font-bold text-xs tabular-nums">
-              <GlossaryTerm termKey="sol" label={`SOL ${state.environment.solNumber}/${state.targetSols}`} />
+          <div className="flex items-center gap-2 text-xs text-[#a3a9b8] font-mono whitespace-nowrap tabular-nums">
+            <span className="text-[#38bdf8] font-medium">
+              <GlossaryTerm termKey="sol" label={`Sol ${state.environment.solNumber}/${state.targetSols}`} />
             </span>
-            <span>·</span>
-            <span>
-              {state.planet === 'moon' && state.environment.isLunarNightCycle
-                ? `🌑 LUNAR NIGHT (${state.environment.lunarPhaseDay}/28)`
-                : isDaytime
-                ? '☀️ DAYLIGHT'
-                : '🌑 NIGHT'}
+            <span className="text-[#7a8296]">·</span>
+            <span className="inline-flex items-center gap-1">
+              {isDaytime ? (
+                <Sun className="w-3.5 h-3.5 text-[#a3a9b8]" strokeWidth={1.5} />
+              ) : (
+                <Moon className="w-3.5 h-3.5 text-[#a3a9b8]" strokeWidth={1.5} />
+              )}
+              <span>
+                {state.planet === 'moon' && state.environment.isLunarNightCycle
+                  ? `Lunar night (${state.environment.lunarPhaseDay}/28)`
+                  : isDaytime
+                  ? 'Daylight'
+                  : 'Night'}
+              </span>
             </span>
-            <span>·</span>
-            <span className="tabular-nums">{Math.round(state.environment.ambientTemperatureC)}°C</span>
+            <span className="text-[#7a8296]">·</span>
+            <span>{Math.round(state.environment.ambientTemperatureC)}°C</span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[10px] font-mono tabular-nums whitespace-nowrap">
-            <span className="text-slate-400">DONKI SWx:</span>
+          <div className="flex items-center gap-2 text-xs font-mono tabular-nums whitespace-nowrap">
+            <span className="text-[#7a8296]">DONKI SWx</span>
             <span
-              className={`font-bold uppercase ${
+              className={
                 flareTelemetry.riskLevel === 'critical'
-                  ? 'text-rose-400'
+                  ? 'text-[#e5484d]'
                   : flareTelemetry.riskLevel === 'high'
-                  ? 'text-amber-400'
-                  : 'text-emerald-400'
-              }`}
+                  ? 'text-[#e5a93b]'
+                  : 'text-[#4cc38a]'
+              }
             >
               {flareTelemetry.flareClass} ({flareTelemetry.riskLevel})
             </span>
-            <span className="px-1 py-0.2 rounded bg-slate-800 text-amber-300 font-bold text-[9px]">
-              {flareTelemetry.sourceBadge}
+            <span className="px-1.5 py-0.5 rounded-md bg-[#1a1e28] text-[#a3a9b8] text-xs">
+              {flareTelemetry.sourceBadge === 'LIVE' ? 'Live' : 'Archived'}
             </span>
           </div>
 
           {nextUpcomingEvents.length > 0 && (
-            <div className="pt-1 border-t border-slate-800 flex items-center gap-1.5 flex-wrap">
-              <span className="text-[9px] font-mono text-slate-400 uppercase">UPCOMING:</span>
+            <div className="pt-1.5 border-t border-[#eef0f5]/[0.08] flex items-center gap-1.5 flex-wrap">
+              <span className="text-xs font-mono text-[#7a8296]">Upcoming</span>
               {nextUpcomingEvents.map((ev) => (
                 <span
                   key={ev.id}
-                  className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950/60 border border-amber-500/40 text-amber-200"
+                  className="text-xs font-mono px-2 py-0.5 rounded-md bg-[#0b0d14] border border-[#eef0f5]/[0.08] text-[#e5a93b] tabular-nums"
                 >
                   Sol {ev.triggerSol}: {ev.title.split('(')[0].trim()}
                 </span>
@@ -338,35 +401,45 @@ export const HUD: React.FC<HUDProps> = ({
         </div>
 
         {/* Top-Center: Simulation Speed (1x-10x) & Academy Tool Bar */}
-        <div className="pointer-events-auto relative flex flex-col items-center gap-1.5 shrink-0">
+        <div className="pointer-events-auto relative flex flex-col items-center gap-2 shrink-0">
           <div
             data-tutorial-target="time-controls"
-            className="bg-slate-900/92 border border-slate-800 rounded-xl p-1.5 shadow-lg flex items-center gap-1 whitespace-nowrap"
+            className="bg-[#11141c]/95 border border-[#eef0f5]/[0.08] rounded-xl p-1.5 flex items-center gap-1 whitespace-nowrap"
           >
             <button
               type="button"
               onClick={onTogglePause}
               aria-label={state.paused ? 'Resume simulation' : 'Pause simulation'}
-              className={`px-2.5 py-1 text-xs font-mono font-semibold rounded-lg transition-colors cursor-pointer ${
+              className={`h-8 px-3 text-xs font-sans font-medium rounded-lg inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer ${
                 state.paused
-                  ? 'bg-amber-500 text-slate-950 font-bold'
-                  : 'text-slate-200 hover:bg-slate-800'
+                  ? 'bg-[#eef0f5] text-[#07080d]'
+                  : 'text-[#eef0f5] hover:bg-[#1a1e28]'
               }`}
             >
-              {state.paused ? '▶ RESUME' : '❚❚ PAUSE'}
+              {state.paused ? (
+                <>
+                  <Play className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  <span>Resume</span>
+                </>
+              ) : (
+                <>
+                  <Pause className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  <span>Pause</span>
+                </>
+              )}
             </button>
 
-            <div className="w-[1px] h-4 bg-slate-800 mx-0.5" />
+            <div className="w-px h-4 bg-[#eef0f5]/10 mx-1" />
 
             {([1, 2, 5, 10] as const).map((spd) => (
               <button
                 key={spd}
                 type="button"
                 onClick={() => onSetTimeSpeed(spd)}
-                className={`px-2 py-1 text-xs font-mono rounded-md transition-colors cursor-pointer ${
+                className={`h-8 px-2.5 text-xs font-mono rounded-lg transition-colors duration-150 cursor-pointer tabular-nums ${
                   state.timeSpeed === spd && !state.paused
-                    ? 'bg-cyan-500 text-slate-950 font-bold'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-[#1a1e28] border border-[#38bdf8]/60 text-[#38bdf8] font-medium'
+                    : 'text-[#a3a9b8] hover:text-[#eef0f5] hover:bg-[#1a1e28]/60 border border-transparent'
                 }`}
               >
                 {spd}x
@@ -377,135 +450,163 @@ export const HUD: React.FC<HUDProps> = ({
               type="button"
               onClick={() => setIsCompressionOpen((prev) => !prev)}
               aria-label="Configure Time Compression Ratio"
-              className={`px-2 py-1 text-xs font-mono rounded-md transition-colors cursor-pointer tabular-nums ${
+              className={`h-8 px-2.5 text-xs font-mono rounded-lg inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer tabular-nums ${
                 isCompressionOpen
-                  ? 'bg-cyan-500 text-slate-950 font-bold'
-                  : 'text-cyan-300 hover:text-white hover:bg-slate-800'
+                  ? 'bg-[#1a1e28] border border-[#38bdf8]/60 text-[#eef0f5]'
+                  : 'text-[#a3a9b8] hover:text-[#eef0f5] hover:bg-[#1a1e28]/60 border border-transparent'
               }`}
             >
-              ⏱ {effectiveRatio}×
+              <Clock className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>{effectiveRatio}×</span>
             </button>
 
-            <div className="w-[1px] h-4 bg-slate-800 mx-0.5" />
+            <div className="w-px h-4 bg-[#eef0f5]/10 mx-1" />
 
             <button
               type="button"
               onClick={onToggleMissionLog}
               aria-label={isMissionLogOpen ? 'Close Mission Log' : 'Open Mission Log'}
-              className={`px-2 py-1 text-xs font-mono rounded-md transition-colors cursor-pointer ${
+              className={`h-8 px-2.5 text-xs font-sans font-medium rounded-lg inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer tabular-nums ${
                 isMissionLogOpen
-                  ? 'bg-cyan-500 text-slate-950 font-bold'
-                  : 'text-slate-300 hover:bg-slate-800'
+                  ? 'bg-[#1a1e28] border border-[#38bdf8]/60 text-[#eef0f5]'
+                  : 'text-[#a3a9b8] hover:text-[#eef0f5] hover:bg-[#1a1e28]/60 border border-transparent'
               }`}
             >
-              📜 LOG ({state.eventLog.length})
+              <ScrollText className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>Log</span>
+              <span className="font-mono text-[#7a8296]">({state.eventLog.length})</span>
             </button>
 
             <button
               type="button"
               onClick={onToggleResearchTree}
               aria-label={isResearchTreeOpen ? 'Close Research Tree' : 'Open Research Tree'}
-              className={`px-2 py-1 text-xs font-mono rounded-md transition-colors cursor-pointer ${
+              className={`h-8 px-2.5 text-xs font-sans font-medium rounded-lg inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer tabular-nums ${
                 isResearchTreeOpen
-                  ? 'bg-amber-400 text-slate-950 font-bold'
-                  : 'text-amber-300 hover:bg-slate-800'
+                  ? 'bg-[#1a1e28] border border-[#38bdf8]/60 text-[#eef0f5]'
+                  : 'text-[#a3a9b8] hover:text-[#eef0f5] hover:bg-[#1a1e28]/60 border border-transparent'
               }`}
             >
-              🔬 R&amp;D ({Math.floor(state.resources.sciencePoints)})
+              <FlaskConical className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>R&amp;D</span>
+              <span className="font-mono text-[#7a8296]">({Math.floor(state.resources.sciencePoints)})</span>
             </button>
 
             <button
               type="button"
               onClick={onToggleAudio}
               aria-label={state.audioMuted ? 'Unmute Audio' : 'Mute Audio'}
-              className="px-2 py-1 text-xs font-mono text-slate-300 hover:text-white rounded-md hover:bg-slate-800 cursor-pointer"
+              className="h-8 w-8 inline-flex items-center justify-center text-[#a3a9b8] hover:text-[#eef0f5] rounded-lg hover:bg-[#1a1e28]/60 cursor-pointer transition-colors duration-150"
             >
-              {state.audioMuted ? '🔇' : '🔊'}
+              {state.audioMuted ? (
+                <VolumeX className="w-4 h-4" strokeWidth={1.5} />
+              ) : (
+                <Volume2 className="w-4 h-4" strokeWidth={1.5} />
+              )}
             </button>
           </div>
 
-          {/* Second Compact Row: Priority Board, Garden Guide, Health & Data Sources, Co-op, Space Terms */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-xl px-2 py-1 shadow flex items-center gap-1.5 flex-wrap justify-center">
+          {/* Second Compact Row: Academy Tools */}
+          <div className="bg-[#11141c]/95 border border-[#eef0f5]/[0.08] rounded-xl p-1 flex items-center gap-1 flex-wrap justify-center">
             <button
               type="button"
               onClick={() => setIsPriorityOpen(true)}
               data-testid="open-priority-btn"
-              className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-slate-950 border border-slate-700 hover:border-amber-400 text-amber-300 cursor-pointer"
+              className="h-8 px-2.5 text-xs font-sans font-medium rounded-lg bg-[#0b0d14] border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] hover:border-[#eef0f5]/15 text-[#eef0f5] inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
             >
-              📋 Priority Board {state.priorityBoard.completedForSol ? '✓' : '!'}
+              <ClipboardList className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>Priority board</span>
+              <span
+                className={`w-1.5 h-1.5 rounded-full ${
+                  state.priorityBoard.completedForSol ? 'bg-[#4cc38a]' : 'bg-[#e5a93b]'
+                }`}
+                aria-hidden="true"
+              />
             </button>
+
             <button
               type="button"
               onClick={() => setIsGardenOpen(true)}
               data-testid="open-garden-btn"
-              className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-slate-950 border border-slate-700 hover:border-emerald-400 text-emerald-300 cursor-pointer"
+              className="h-8 px-2.5 text-xs font-sans font-medium rounded-lg bg-[#0b0d14] border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] hover:border-[#eef0f5]/15 text-[#a3a9b8] hover:text-[#eef0f5] inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
             >
-              🌱 Garden Guide
+              <Sprout className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>Garden guide</span>
             </button>
+
             <button
               type="button"
               onClick={() => setIsDataSourcesOpen(true)}
               data-testid="open-sources-btn"
-              className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-slate-950 border border-slate-700 hover:border-cyan-400 text-cyan-300 cursor-pointer"
+              className="h-8 px-2.5 text-xs font-sans font-medium rounded-lg bg-[#0b0d14] border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] hover:border-[#eef0f5]/15 text-[#a3a9b8] hover:text-[#eef0f5] inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
             >
-              🧬 Health &amp; NASA Sources
+              <Dna className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>Health &amp; NASA sources</span>
             </button>
+
             <button
               type="button"
               onClick={() => setIsDebriefOpen(true)}
               data-testid="open-debrief-btn"
-              className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-slate-950 border border-slate-700 hover:border-cyan-400 text-cyan-200 cursor-pointer"
+              className="h-8 px-2.5 text-xs font-sans font-medium rounded-lg bg-[#0b0d14] border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] hover:border-[#eef0f5]/15 text-[#a3a9b8] hover:text-[#eef0f5] inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150 tabular-nums"
             >
-              📊 Debrief ({state.decisionTimeline.length})
+              <BarChart3 className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>Debrief</span>
+              <span className="font-mono text-[#7a8296]">({state.decisionTimeline.length})</span>
             </button>
+
             <button
               type="button"
               onClick={() => setIsCoopOpen(true)}
               data-testid="open-coop-btn"
-              className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-slate-950 border border-slate-700 hover:border-cyan-400 text-slate-200 cursor-pointer"
+              className="h-8 px-2.5 text-xs font-sans font-medium rounded-lg bg-[#0b0d14] border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] hover:border-[#eef0f5]/15 text-[#a3a9b8] hover:text-[#eef0f5] inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
             >
-              🤝 Co-op
+              <Users className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>Co-op</span>
             </button>
+
             <button
               type="button"
               onClick={() => setIsGlossaryOpen(true)}
               data-testid="open-glossary-btn"
-              className="px-2.5 py-1 text-[11px] font-mono rounded-lg bg-slate-950 border border-slate-700 hover:border-cyan-400 text-slate-200 cursor-pointer"
+              className="h-8 px-2.5 text-xs font-sans font-medium rounded-lg bg-[#0b0d14] border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] hover:border-[#eef0f5]/15 text-[#a3a9b8] hover:text-[#eef0f5] inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
             >
-              ❓ Terms
+              <HelpCircle className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+              <span>Terms</span>
             </button>
+
             {onRestartTutorial && (
               <button
                 type="button"
                 onClick={onRestartTutorial}
                 aria-label="Replay 60-second mission tutorial"
-                className="px-2 py-1 text-[11px] font-mono rounded-lg bg-slate-950 border border-slate-700 hover:border-cyan-400 text-cyan-300 cursor-pointer"
+                className="h-8 px-2.5 text-xs font-mono rounded-lg bg-[#0b0d14] border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] hover:border-[#eef0f5]/15 text-[#38bdf8] cursor-pointer transition-colors duration-150 tabular-nums"
               >
-                60s Guide
+                60s guide
               </button>
             )}
           </div>
 
           {isCompressionOpen && (
-            <div className="absolute top-full mt-2 w-[25rem] bg-slate-950 border border-slate-700 rounded-xl p-3.5 shadow-2xl z-50 space-y-2.5">
+            <div className="absolute top-full mt-2 w-[400px] bg-[#11141c] border border-[#eef0f5]/10 rounded-xl p-4 z-50 space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-white font-mono">
-                  Time Compression Calculator
+                <h4 className="text-xs font-medium text-[#eef0f5] font-sans">
+                  Time compression calculator
                 </h4>
                 <button
                   type="button"
                   onClick={() => setIsCompressionOpen(false)}
                   aria-label="Close Time Compression Panel"
-                  className="text-slate-400 hover:text-white text-xs px-1 cursor-pointer"
+                  className="text-[#7a8296] hover:text-[#eef0f5] p-1 rounded-md hover:bg-[#1a1e28] cursor-pointer"
                 >
-                  ✕
+                  <X className="w-4 h-4" strokeWidth={1.5} />
                 </button>
               </div>
-              <div className="text-[10px] font-mono bg-slate-900 border border-slate-800 rounded-lg p-2 text-slate-300 tabular-nums">
+              <div className="text-xs font-mono bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-lg p-2.5 text-[#a3a9b8] tabular-nums">
                 ratio = ({state.targetSols} days × 86,400s) / {compression.targetSessionMinutes * 60}s ={' '}
-                <span className="text-amber-300 font-bold">{Math.round(compression.ratio)}×</span>
+                <span className="text-[#38bdf8] font-medium">{Math.round(compression.ratio)}×</span>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 {SESSION_LENGTH_PRESETS.map((mins) => {
                   const row = calculateTimeCompression(state.targetSols, mins);
                   const isCurrent = compression.targetSessionMinutes === mins;
@@ -514,15 +615,15 @@ export const HUD: React.FC<HUDProps> = ({
                       key={mins}
                       type="button"
                       onClick={() => onUpdateTimeCompression(mins)}
-                      className={`w-full flex items-center justify-between text-xs font-mono px-2.5 py-1.5 rounded-lg cursor-pointer ${
+                      className={`w-full flex items-center justify-between text-xs font-mono px-3 py-2 rounded-lg border cursor-pointer tabular-nums transition-colors duration-150 ${
                         isCurrent
-                          ? 'bg-cyan-500/20 border border-cyan-400 text-white font-bold'
-                          : 'bg-slate-900 border border-transparent text-slate-300 hover:border-slate-700'
+                          ? 'bg-[#1a1e28] border-[#38bdf8]/60 text-[#eef0f5]'
+                          : 'bg-[#0b0d14] border-[#eef0f5]/[0.08] text-[#a3a9b8] hover:text-[#eef0f5]'
                       }`}
                     >
                       <span>{mins === 180 ? '3 h' : `${mins} min`}</span>
-                      <span className="text-amber-300">{Math.round(row.ratio)}×</span>
-                      <span className="text-cyan-300">1s = {formatRealSecondRate(row)}</span>
+                      <span className="text-[#38bdf8]">{Math.round(row.ratio)}×</span>
+                      <span>1s = {formatRealSecondRate(row)}</span>
                       <span>1 Sol = {formatInGameDayDuration(row)}</span>
                     </button>
                   );
@@ -535,57 +636,60 @@ export const HUD: React.FC<HUDProps> = ({
         {/* Top-Right: Crew Vitals & Storm Shelter Button */}
         <div
           data-tutorial-target="crew-rad-bar"
-          className={`pointer-events-auto bg-slate-900/92 border rounded-xl px-3 py-2 shadow-lg flex items-center gap-3 shrink-0 transition-colors ${
+          className={`pointer-events-auto bg-[#11141c]/95 border rounded-xl px-3 py-2.5 flex items-center gap-3 shrink-0 transition-colors duration-150 ${
             flareTelemetry.riskLevel === 'critical'
-              ? 'border-rose-500/80'
+              ? 'border-[#e5484d]/60'
               : highFlareRisk
-              ? 'border-amber-500/75'
-              : 'border-slate-800'
+              ? 'border-[#e5a93b]/50'
+              : 'border-[#eef0f5]/[0.08]'
           }`}
         >
           <div>
-            <div className="text-[10px] font-mono text-slate-400">CREW HEALTH</div>
-            <div className="text-xs font-mono font-bold text-white tabular-nums">
+            <div className="text-xs font-sans text-[#7a8296]">Crew health</div>
+            <div className="text-xs font-mono font-medium text-[#eef0f5] tabular-nums">
               {Math.round(state.crew.healthPct)}% ({state.crew.healthy}/{state.crew.total})
             </div>
           </div>
 
-          <div className="w-[1px] h-7 bg-slate-800" />
+          <div className="w-px h-7 bg-[#eef0f5]/10" />
 
           <div>
-            <div className="text-[10px] font-mono text-slate-400">
-              <GlossaryTerm termKey="radiation dose" label="SHIELD / DOSE" />
+            <div className="text-xs font-sans text-[#7a8296]">
+              <GlossaryTerm termKey="radiation dose" label="Shield / Dose" />
             </div>
-            <div className="text-xs font-mono font-bold text-cyan-300 tabular-nums">
-              {coreMeters.shield.pct}% Shield
+            <div className="text-xs font-mono font-medium text-[#38bdf8] tabular-nums">
+              {coreMeters.shield.pct}% shield
             </div>
           </div>
 
           <button
             type="button"
             onClick={() => onOrderBunker(!state.crew.inStormShelter)}
-            className={`px-2.5 py-1.5 text-[11px] font-mono font-bold rounded-lg border transition-all cursor-pointer whitespace-nowrap ${
+            className={`h-8 px-3 text-xs font-sans font-medium rounded-lg border inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer whitespace-nowrap ${
               state.crew.inStormShelter
-                ? 'bg-amber-500 text-slate-950 border-amber-400'
-                : 'bg-slate-800 text-slate-200 border-slate-700 hover:border-amber-400'
+                ? 'bg-[#eef0f5] text-[#07080d] border-[#eef0f5]'
+                : 'bg-[#1a1e28] text-[#eef0f5] border-[#eef0f5]/10 hover:border-[#38bdf8]/60'
             }`}
           >
-            {state.crew.inStormShelter ? '🛡️ BUNKERED' : 'BUNKER CREW'}
+            <Shield className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+            <span>{state.crew.inStormShelter ? 'Bunkered' : 'Bunker crew'}</span>
           </button>
         </div>
       </div>
 
-      {/* 2. CHAIN REACTION OR ACTIVE HAZARD BANNER */}
-      <div className="relative z-10 self-center pointer-events-auto max-w-xl w-full space-y-1.5 my-1">
+      {/* 2. CHAIN REACTION BANNER */}
+      <div className="relative z-10 self-center pointer-events-auto max-w-xl w-full space-y-2 my-1">
         {state.chainReactionActive && state.chainReactionMessage && (
           <div
             data-testid="chain-reaction-banner"
-            className="bg-rose-950/95 border border-rose-500 rounded-xl px-3.5 py-2 text-xs text-rose-100 shadow-xl flex items-center gap-2"
+            className="bg-[#11141c] border border-[#e5484d]/60 rounded-xl p-3 text-xs text-[#eef0f5] flex items-center gap-2.5"
           >
-            <span className="text-base">⚠️</span>
+            <AlertTriangle className="w-4 h-4 text-[#e5484d] shrink-0" strokeWidth={1.5} />
             <div>
-              <strong className="font-mono text-rose-300 uppercase mr-1">CHAIN REACTION:</strong>
-              {state.chainReactionMessage}
+              <span className="font-mono font-medium text-[#e5484d] mr-2">
+                Chain reaction:
+              </span>
+              <span className="text-[#eef0f5]">{state.chainReactionMessage}</span>
             </div>
           </div>
         )}
@@ -596,11 +700,11 @@ export const HUD: React.FC<HUDProps> = ({
         {/* Bottom-Left: 3 Core Resources + 1 Safety Meter */}
         <div
           data-tutorial-target="telemetry-bar"
-          className="pointer-events-auto bg-slate-900/92 border border-slate-800 rounded-xl p-3 shadow-xl w-72 space-y-2 shrink-0"
+          className="pointer-events-auto bg-[#11141c]/95 border border-[#eef0f5]/[0.08] rounded-2xl p-3 w-72 space-y-2 shrink-0"
         >
-          <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 uppercase tracking-wider">
-            <span>OUTPOST 3+1 VITALS</span>
-            <span className="text-slate-200">
+          <div className="flex items-center justify-between text-xs font-mono text-[#7a8296] px-1">
+            <span className="font-sans text-[#a3a9b8]">Outpost vitals</span>
+            <span className="text-[#eef0f5] tabular-nums">
               {Math.round(state.resources.regolithMinedKg)}R · {Math.round(state.resources.metalKg)}M
             </span>
           </div>
@@ -609,22 +713,27 @@ export const HUD: React.FC<HUDProps> = ({
 
           {renderCoreMeterCard(
             coreMeters.life_support,
-            <div className="space-y-1.5 pt-0.5">
-              <div className="flex items-center justify-between gap-1.5">
+            <div className="space-y-2 pt-1">
+              <div className="flex items-center justify-between gap-2">
                 <button
                   type="button"
                   onClick={() => setIsLifeSupportExpanded((p) => !p)}
                   aria-expanded={isLifeSupportExpanded}
                   data-testid="toggle-life-support-breakdown"
-                  className="text-left text-[10px] font-mono text-cyan-300 hover:text-cyan-200 underline cursor-pointer"
+                  className="text-left text-xs font-mono text-[#38bdf8] hover:text-[#eef0f5] inline-flex items-center gap-1 cursor-pointer transition-colors duration-150"
                 >
-                  {isLifeSupportExpanded ? '▴ Hide O₂ & Water split' : '▾ Tap for O₂ & Water split'}
+                  {isLifeSupportExpanded ? (
+                    <ChevronUp className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  ) : (
+                    <ChevronDown className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  )}
+                  <span>{isLifeSupportExpanded ? 'Hide O₂ & H₂O' : 'Split O₂ & H₂O'}</span>
                 </button>
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="flex items-center gap-1.5 shrink-0">
                   <span
                     data-testid="o2-status-pill"
                     data-resource-status={oxygenStatus}
-                    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[9px] font-mono font-bold ${meterBadgeClass[oxygenStatus]} ${getResourcePulseClass(oxygenStatus)}`}
+                    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-xs font-mono ${meterBadgeClass[oxygenStatus]} ${getResourcePulseClass(oxygenStatus)}`}
                   >
                     <span className={`w-1.5 h-1.5 rounded-full ${meterDotClass[oxygenStatus]}`} />
                     O₂
@@ -632,7 +741,7 @@ export const HUD: React.FC<HUDProps> = ({
                   <span
                     data-testid="h2o-status-pill"
                     data-resource-status={waterStatus}
-                    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded border text-[9px] font-mono font-bold ${meterBadgeClass[waterStatus]} ${getResourcePulseClass(waterStatus)}`}
+                    className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md border text-xs font-mono ${meterBadgeClass[waterStatus]} ${getResourcePulseClass(waterStatus)}`}
                   >
                     <span className={`w-1.5 h-1.5 rounded-full ${meterDotClass[waterStatus]}`} />
                     H₂O
@@ -642,15 +751,15 @@ export const HUD: React.FC<HUDProps> = ({
               {isLifeSupportExpanded && (
                 <div
                   data-testid="life-support-breakdown"
-                  className="bg-slate-950/90 border border-slate-800 rounded-lg p-2 space-y-1.5 text-[10px] font-mono tabular-nums"
+                  className="bg-[#11141c] border border-[#eef0f5]/[0.08] rounded-lg p-2 space-y-1.5 text-xs font-mono tabular-nums"
                 >
                   <div
                     data-testid="o2-meter-row"
                     data-resource-status={oxygenStatus}
-                    className={`flex justify-between items-center rounded border px-1.5 py-1 ${meterBorderClass[oxygenStatus]} ${getResourcePulseClass(oxygenStatus)}`}
+                    className={`flex justify-between items-center rounded-md border px-2 py-1 ${meterBorderClass[oxygenStatus]} ${getResourcePulseClass(oxygenStatus)}`}
                   >
-                    <span className="text-sky-200 font-semibold">Oxygen (O₂):</span>
-                    <span className="text-white">
+                    <span className="text-[#a3a9b8]">Oxygen (O₂)</span>
+                    <span className="text-[#eef0f5]">
                       {Math.round(state.resources.oxygenKg)} kg ({state.resources.netOxygenKgPerSol >= 0 ? '+' : ''}
                       {state.resources.netOxygenKgPerSol}/sol)
                     </span>
@@ -658,10 +767,10 @@ export const HUD: React.FC<HUDProps> = ({
                   <div
                     data-testid="h2o-meter-row"
                     data-resource-status={waterStatus}
-                    className={`flex justify-between items-center rounded border px-1.5 py-1 ${meterBorderClass[waterStatus]} ${getResourcePulseClass(waterStatus)}`}
+                    className={`flex justify-between items-center rounded-md border px-2 py-1 ${meterBorderClass[waterStatus]} ${getResourcePulseClass(waterStatus)}`}
                   >
-                    <span className="text-blue-200 font-semibold">Water (H₂O):</span>
-                    <span className="text-white">
+                    <span className="text-[#a3a9b8]">Water (H₂O)</span>
+                    <span className="text-[#eef0f5]">
                       {Math.round(state.resources.waterLiters)} L ({state.resources.netWaterLitersPerSol >= 0 ? '+' : ''}
                       {state.resources.netWaterLitersPerSol}/sol)
                     </span>
@@ -681,7 +790,7 @@ export const HUD: React.FC<HUDProps> = ({
           className="pointer-events-auto flex flex-col items-center max-w-2xl w-full relative space-y-2"
         >
           {genericTooltip && (
-            <div className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1 text-xs text-slate-200 shadow-xl">
+            <div className="bg-[#11141c] border border-[#eef0f5]/10 rounded-lg px-3 py-1.5 text-xs text-[#a3a9b8]">
               {genericTooltip}
             </div>
           )}
@@ -698,9 +807,14 @@ export const HUD: React.FC<HUDProps> = ({
             <button
               type="button"
               onClick={() => setIsDockCollapsed(!isDockCollapsed)}
-              className="px-3 py-1 bg-slate-900/92 border border-slate-700 hover:border-slate-500 text-xs font-mono text-slate-200 rounded-lg cursor-pointer shadow"
+              className="h-8 px-3 bg-[#11141c]/95 border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] text-xs font-sans font-medium text-[#a3a9b8] hover:text-[#eef0f5] rounded-lg inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
             >
-              {isDockCollapsed ? '▲ EXPAND BUILD DOCK' : '▼ HIDE BUILD DOCK'}
+              {isDockCollapsed ? (
+                <ChevronUp className="w-3.5 h-3.5" strokeWidth={1.5} />
+              ) : (
+                <ChevronDown className="w-3.5 h-3.5" strokeWidth={1.5} />
+              )}
+              <span>{isDockCollapsed ? 'Expand build dock' : 'Hide build dock'}</span>
             </button>
 
             <button
@@ -708,43 +822,45 @@ export const HUD: React.FC<HUDProps> = ({
               onClick={onCleanPanels}
               onMouseEnter={() => setGenericTooltip('Clean dust off Solar Panels (-4 kWh battery)')}
               onMouseLeave={() => setGenericTooltip(null)}
-              className="px-3 py-1 bg-slate-900/92 border border-slate-700 hover:border-cyan-400 text-xs font-mono text-cyan-300 rounded-lg cursor-pointer shadow"
+              className="h-8 px-3 bg-[#11141c]/95 border border-[#eef0f5]/[0.08] hover:bg-[#1a1e28] text-xs font-sans font-medium text-[#eef0f5] rounded-lg inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
             >
-              ✨ SHAKE PANEL DUST
+              <Sparkles className="w-3.5 h-3.5 text-[#38bdf8]" strokeWidth={1.5} />
+              <span>Shake panel dust</span>
             </button>
 
             <button
               type="button"
               onClick={onOpenRoverCostCard}
               data-testid="rover-trip-btn"
-              className="px-3 py-1 bg-amber-500/20 border border-amber-400/70 hover:bg-amber-500/30 text-xs font-mono font-bold text-amber-200 rounded-lg cursor-pointer shadow"
+              className="h-8 px-3 bg-[#1a1e28] border border-[#e5a93b]/40 hover:border-[#e5a93b]/70 text-xs font-sans font-medium text-[#eef0f5] rounded-lg inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
             >
-              🚗 ROVER TRIP (COST CARD)
+              <Car className="w-3.5 h-3.5 text-[#e5a93b]" strokeWidth={1.5} />
+              <span>Rover trip (cost card)</span>
             </button>
           </div>
 
           {!isDockCollapsed && (
-            <div className="w-full bg-slate-900/95 border border-slate-800 rounded-xl p-2.5 shadow-2xl space-y-2">
-              <div className="flex items-center gap-1 overflow-x-auto pb-0.5">
+            <div className="w-full bg-[#11141c]/95 border border-[#eef0f5]/[0.08] rounded-xl p-3 space-y-2.5">
+              <div className="flex items-center gap-1 overflow-x-auto pb-1">
                 {(['all', 'power', 'life_support', 'food', 'shield', 'resource', 'command', 'research'] as const).map(
                   (cat) => (
                     <button
                       key={cat}
                       type="button"
                       onClick={() => setActiveCategory(cat)}
-                      className={`px-2 py-0.5 text-[11px] font-mono rounded-md capitalize shrink-0 cursor-pointer ${
+                      className={`h-7 px-2.5 text-xs font-sans rounded-md shrink-0 cursor-pointer transition-colors duration-150 ${
                         activeCategory === cat
-                          ? 'bg-cyan-500 text-slate-950 font-bold'
-                          : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                          ? 'bg-[#1a1e28] border border-[#38bdf8]/60 text-[#eef0f5] font-medium'
+                          : 'text-[#7a8296] hover:text-[#eef0f5] hover:bg-[#1a1e28]/60 border border-transparent'
                       }`}
                     >
-                      {cat.replace('_', ' ')}
+                      {CATEGORY_LABELS[cat]}
                     </button>
                   )
                 )}
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 max-h-32 overflow-y-auto pr-1">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-40 overflow-y-auto pr-1">
                 {dockModuleIds.map((id) => {
                   const mod = MODULE_CATALOG[id];
                   const isPlacing = activePlacementType === id;
@@ -765,20 +881,24 @@ export const HUD: React.FC<HUDProps> = ({
                         }
                       }}
                       aria-label={`Inspect Cost Card for ${mod.name}`}
-                      className={`text-left p-2 rounded-lg border transition-all cursor-pointer ${
+                      className={`text-left p-2.5 rounded-lg border transition-colors duration-150 cursor-pointer ${
                         isPlacing
-                          ? 'bg-cyan-950 border-cyan-400 text-white ring-1 ring-cyan-400'
+                          ? 'bg-[#1a1e28] border-[#38bdf8]/70 text-[#eef0f5]'
                           : isTechLocked
-                          ? 'bg-purple-950/35 border-purple-700/60 text-purple-200'
-                          : 'bg-slate-950/75 border-slate-800 hover:border-cyan-400 text-slate-200'
+                          ? 'bg-[#0b0d14] border-[#eef0f5]/[0.06] text-[#7a8296] hover:border-[#eef0f5]/15'
+                          : 'bg-[#0b0d14] border-[#eef0f5]/[0.08] hover:bg-[#1a1e28]/70 hover:border-[#eef0f5]/15 text-[#eef0f5]'
                       }`}
                     >
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="text-[11px] font-semibold truncate text-white">{mod.name}</span>
-                        {isTechLocked && <span className="text-[10px]">🔒</span>}
+                      <div className="flex items-center justify-between gap-1.5">
+                        <span className="text-xs font-medium truncate text-[#eef0f5]">
+                          {mod.name}
+                        </span>
+                        {isTechLocked && (
+                          <Lock className="w-3.5 h-3.5 text-[#7a8296] shrink-0" strokeWidth={1.5} />
+                        )}
                       </div>
-                      <div className="flex items-center justify-between text-[10px] font-mono mt-1 text-slate-400">
-                        <span className={mod.powerNetKw >= 0 ? 'text-emerald-400' : 'text-amber-300'}>
+                      <div className="flex items-center justify-between text-xs font-mono mt-1.5 text-[#7a8296] tabular-nums">
+                        <span className={mod.powerNetKw >= 0 ? 'text-[#4cc38a]' : 'text-[#e5a93b]'}>
                           {mod.powerNetKw >= 0 ? `+${mod.powerNetKw}` : mod.powerNetKw} kW
                         </span>
                         <span>{mod.buildTimeSols} Sol</span>
@@ -789,17 +909,20 @@ export const HUD: React.FC<HUDProps> = ({
               </div>
 
               {activePlacementType && (
-                <div className="bg-cyan-950/60 border border-cyan-500/50 rounded-lg px-2.5 py-1.5 text-xs text-cyan-200 flex items-center justify-between">
+                <div className="bg-[#0b0d14] border border-[#38bdf8]/50 rounded-lg px-3 py-2 text-xs text-[#eef0f5] flex items-center justify-between gap-2">
                   <span>
-                    Tap open Moon/Mars ground tile to place{' '}
-                    <strong>{MODULE_CATALOG[activePlacementType].name}</strong>
+                    Tap open Moon or Mars ground tile to place{' '}
+                    <span className="font-medium text-[#38bdf8]">
+                      {MODULE_CATALOG[activePlacementType].name}
+                    </span>
                   </span>
                   <button
                     type="button"
                     onClick={() => onStartPlacement(null)}
-                    className="text-slate-300 hover:text-white font-mono px-2 py-0.5 rounded bg-slate-900 cursor-pointer"
+                    className="text-[#a3a9b8] hover:text-[#eef0f5] font-mono px-2 py-0.5 rounded-md bg-[#1a1e28] border border-[#eef0f5]/10 cursor-pointer inline-flex items-center gap-1.5"
                   >
-                    Cancel [Esc]
+                    <span>Cancel</span>
+                    <kbd className="text-[#7a8296]">Esc</kbd>
                   </button>
                 </div>
               )}
@@ -809,66 +932,70 @@ export const HUD: React.FC<HUDProps> = ({
 
         {/* Bottom-Right: Selected Module Inspector */}
         {selectedModule && selectedDef && (
-          <div className="pointer-events-auto bg-slate-900/92 border border-slate-800 rounded-xl p-3 shadow-xl w-72 space-y-2 shrink-0">
-            <div className="flex items-center justify-between">
+          <div className="pointer-events-auto bg-[#11141c]/95 border border-[#eef0f5]/[0.08] rounded-xl p-3 w-72 space-y-2.5 shrink-0">
+            <div className="flex items-start justify-between gap-2">
               <div>
-                <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">
-                  {selectedDef.category.replace('_', ' ')} MODULE
+                <span className="text-xs font-mono text-[#7a8296] capitalize block">
+                  {selectedDef.category.replace('_', ' ')} module
                 </span>
-                <h3 className="text-sm font-bold text-white">{selectedDef.name}</h3>
+                <h3 className="text-sm font-medium text-[#eef0f5]">{selectedDef.name}</h3>
               </div>
               <button
                 type="button"
                 onClick={() => onSelectModule(null)}
-                className="text-slate-400 hover:text-white p-1 cursor-pointer"
+                className="text-[#7a8296] hover:text-[#eef0f5] p-1 rounded-md hover:bg-[#1a1e28] cursor-pointer"
                 aria-label="Close inspector"
               >
-                ✕
+                <X className="w-4 h-4" strokeWidth={1.5} />
               </button>
             </div>
 
             {(selectedModule.buildProgressPct ?? 100) < 100 && (
-              <div className="bg-amber-950/50 border border-amber-500/40 rounded-lg p-2 text-xs font-mono text-amber-200">
-                ⏱ Under Construction: {Math.round(selectedModule.buildProgressPct ?? 0)}%
+              <div className="bg-[#0b0d14] border border-[#e5a93b]/40 rounded-lg p-2 text-xs font-mono text-[#e5a93b] flex items-center gap-2 tabular-nums">
+                <Clock className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+                <span>Under construction: {Math.round(selectedModule.buildProgressPct ?? 0)}%</span>
               </div>
             )}
 
-            <div className="flex items-center justify-between text-xs font-mono bg-slate-950/70 p-2 rounded-lg">
-              <span>Module Switch:</span>
+            <div className="flex items-center justify-between text-xs font-mono bg-[#0b0d14] border border-[#eef0f5]/[0.08] p-2.5 rounded-lg">
+              <span className="text-[#a3a9b8]">Module switch</span>
               <button
                 type="button"
                 onClick={() => onToggleModuleActive(selectedModule.instanceId)}
-                className={`px-2 py-0.5 rounded font-bold cursor-pointer ${
+                className={`px-2 py-0.5 rounded-md font-medium border cursor-pointer transition-colors duration-150 ${
                   selectedModule.active
-                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
-                    : 'bg-rose-500/20 text-rose-400 border border-rose-500/40'
+                    ? 'bg-[#4cc38a]/15 text-[#4cc38a] border-[#4cc38a]/35'
+                    : 'bg-[#e5484d]/15 text-[#e5484d] border-[#e5484d]/35'
                 }`}
               >
-                {selectedModule.active ? 'ONLINE' : 'POWER OFF'}
+                {selectedModule.active ? 'Online' : 'Power off'}
               </button>
             </div>
 
-            <div className="bg-slate-950/80 border border-slate-800 rounded-lg p-2 space-y-1">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold block">
-                Trade-Off Lesson
+            <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-lg p-2.5 space-y-1">
+              <span className="text-xs font-mono text-[#7a8296] block">
+                Trade-off lesson
               </span>
-              <p className="text-[11px] text-slate-300 leading-snug">{selectedDef.stemConcept}</p>
+              <p className="text-xs text-[#a3a9b8] leading-snug">{selectedDef.stemConcept}</p>
             </div>
 
             {selectedDef.category === 'command' && (
               <div>
                 {selectedModule.regolithShieldInstalled ? (
-                  <div className="text-[11px] font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 rounded-lg p-2">
-                    ✓ 1m Sintered <GlossaryTerm termKey="regolith" label="Regolith" /> Roof Active
+                  <div className="text-xs font-mono text-[#4cc38a] bg-[#0b0d14] border border-[#4cc38a]/35 rounded-lg p-2.5 flex items-center gap-2">
+                    <Check className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                    <span>
+                      1m sintered <GlossaryTerm termKey="regolith" label="Regolith" /> roof active
+                    </span>
                   </div>
                 ) : (
                   <button
                     type="button"
                     onClick={() => onUpgradeRegolith(selectedModule.instanceId)}
-                    className="w-full py-2 px-3 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs rounded-lg flex items-center justify-between cursor-pointer"
+                    className="w-full h-9 px-3 bg-[#eef0f5] hover:bg-white text-[#07080d] font-medium text-xs rounded-lg flex items-center justify-between cursor-pointer transition-colors duration-150"
                   >
-                    <span>Sinter 1m Regolith Roof</span>
-                    <span className="font-mono text-[10px]">200R · 25 kWh</span>
+                    <span>Sinter 1m regolith roof</span>
+                    <span className="font-mono text-xs tabular-nums">200R · 25 kWh</span>
                   </button>
                 )}
               </div>

@@ -11,77 +11,63 @@ interface ModuleTooltipProps {
   className?: string;
 }
 
-/**
- * Hover-based tooltip explaining the resource production/consumption trade-offs,
- * operational costs, and real-world STEM physical concepts before placing a module.
- */
 export const ModuleTooltip: React.FC<ModuleTooltipProps> = ({ module, className = '' }) => {
   if (!module) return null;
 
   return (
     <div
       role="tooltip"
-      className={`pointer-events-none bg-slate-900/98 border border-cyan-500/60 rounded-xl p-3 shadow-2xl w-80 text-left space-y-2 z-50 text-slate-100 animate-in fade-in zoom-in-95 duration-150 ${className}`}
+      className={`pointer-events-none bg-[#11141c] border border-[#eef0f5]/10 rounded-xl p-3 w-80 text-left space-y-2 z-50 text-[#eef0f5] ${className}`}
     >
-      {/* Title & Category Header */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-1.5">
+      <div className="flex items-center justify-between border-b border-[#eef0f5]/[0.08] pb-2">
         <div>
-          <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-semibold block">
-            {module.category.replace('_', ' ')} SPECIFICATION
+          <span className="text-xs font-mono text-[#7a8296] capitalize block">
+            {module.category.replace('_', ' ')} specification
           </span>
-          <h4 className="text-xs font-bold text-white font-display">{module.name}</h4>
+          <h4 className="text-sm font-medium text-[#eef0f5] font-display">{module.name}</h4>
         </div>
-        <div className="text-[10px] font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
-          COST: {module.buildCost.regolithKg}R · {module.buildCost.metalKg}M
+        <div className="text-xs font-mono text-[#a3a9b8] bg-[#0b0d14] px-2 py-1 rounded-md border border-[#eef0f5]/[0.08] tabular-nums">
+          {module.buildCost.regolithKg}R · {module.buildCost.metalKg}M
         </div>
       </div>
 
-      {/* Description */}
-      <p className="text-[11px] text-slate-300 leading-snug font-sans">
+      <p className="text-xs text-[#a3a9b8] leading-snug font-sans">
         {module.description}
       </p>
 
-      {/* Resource Trade-Offs Matrix */}
-      <div className="grid grid-cols-2 gap-1.5 bg-slate-950/80 p-2 rounded-lg border border-slate-800/80 text-[10px] font-mono">
-        {/* Power Trade-off */}
+      <div className="grid grid-cols-2 gap-2 bg-[#0b0d14] p-2.5 rounded-lg border border-[#eef0f5]/[0.08] text-xs font-mono tabular-nums">
         <div className="flex items-center justify-between">
-          <span className="text-slate-400">Power:</span>
+          <span className="text-[#7a8296]">Power</span>
           <span
-            className={`font-bold tabular-nums ${
+            className={
               module.powerNetKw > 0
-                ? 'text-emerald-400'
+                ? 'text-[#4cc38a]'
                 : module.powerNetKw < 0
-                ? 'text-rose-400'
-                : 'text-slate-400'
-            }`}
+                ? 'text-[#e5484d]'
+                : 'text-[#7a8296]'
+            }
           >
             {module.powerNetKw > 0 ? `+${module.powerNetKw}` : module.powerNetKw} kW
           </span>
         </div>
 
-        {/* Oxygen Trade-off */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-400">Oxygen:</span>
-          <span
-            className={`font-bold tabular-nums ${
-              module.oxygenRateKg > 0 ? 'text-sky-300' : 'text-slate-500'
-            }`}
-          >
+          <span className="text-[#7a8296]">Oxygen</span>
+          <span className={module.oxygenRateKg > 0 ? 'text-[#38bdf8]' : 'text-[#7a8296]'}>
             {module.oxygenRateKg > 0 ? `+${module.oxygenRateKg} kg/sol` : '—'}
           </span>
         </div>
 
-        {/* Water Trade-off */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-400">Water:</span>
+          <span className="text-[#7a8296]">Water</span>
           <span
-            className={`font-bold tabular-nums ${
+            className={
               module.waterRateL > 0
-                ? 'text-blue-400'
+                ? 'text-[#38bdf8]'
                 : module.waterRateL < 0
-                ? 'text-rose-400'
-                : 'text-slate-500'
-            }`}
+                ? 'text-[#e5484d]'
+                : 'text-[#7a8296]'
+            }
           >
             {module.waterRateL > 0
               ? `+${module.waterRateL} L/sol`
@@ -91,47 +77,35 @@ export const ModuleTooltip: React.FC<ModuleTooltipProps> = ({ module, className 
           </span>
         </div>
 
-        {/* Food Yield */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-400">Food:</span>
-          <span
-            className={`font-bold tabular-nums ${
-              module.foodRateKg > 0 ? 'text-emerald-400' : 'text-slate-500'
-            }`}
-          >
+          <span className="text-[#7a8296]">Food</span>
+          <span className={module.foodRateKg > 0 ? 'text-[#4cc38a]' : 'text-[#7a8296]'}>
             {module.foodRateKg > 0 ? `+${module.foodRateKg} kg/sol` : '—'}
           </span>
         </div>
 
-        {/* Radiation Shielding */}
         {module.radiationReductionPct > 0 && (
-          <div className="col-span-2 flex items-center justify-between pt-1 border-t border-slate-800/60">
-            <span className="text-slate-400">Radiation Shield:</span>
-            <span className="text-amber-400 font-bold tabular-nums">
-              -{module.radiationReductionPct}% Rads ({module.shieldingRadiusM}m radius)
+          <div className="col-span-2 flex items-center justify-between pt-1.5 border-t border-[#eef0f5]/[0.08]">
+            <span className="text-[#7a8296]">Radiation shield</span>
+            <span className="text-[#e5a93b]">
+              -{module.radiationReductionPct}% ({module.shieldingRadiusM}m)
             </span>
           </div>
         )}
 
-        {/* Crew Capacity */}
         {module.crewCapacity > 0 && (
           <div className="col-span-2 flex items-center justify-between">
-            <span className="text-slate-400">Crew Quarters:</span>
-            <span className="text-cyan-300 font-bold tabular-nums">
-              +{module.crewCapacity} Astronauts
-            </span>
+            <span className="text-[#7a8296]">Crew quarters</span>
+            <span className="text-[#38bdf8]">+{module.crewCapacity} astronauts</span>
           </div>
         )}
       </div>
 
-      {/* STEM Engineering Trade-Off Insight */}
-      <div className="bg-cyan-950/40 border border-cyan-500/30 rounded-lg p-2">
-        <span className="text-[9px] font-mono uppercase tracking-wider text-cyan-300 font-bold block mb-0.5">
-          Engineering Trade-Off
+      <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-lg p-2.5">
+        <span className="text-xs font-mono text-[#7a8296] block mb-0.5">
+          Engineering trade-off
         </span>
-        <p className="text-[10px] text-slate-300 leading-snug">
-          {module.stemConcept}
-        </p>
+        <p className="text-xs text-[#a3a9b8] leading-snug">{module.stemConcept}</p>
       </div>
     </div>
   );

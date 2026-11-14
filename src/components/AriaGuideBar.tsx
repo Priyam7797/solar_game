@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect } from 'react';
+import { Bot, MessageSquare, Radio, Volume2, X } from 'lucide-react';
 import { GameState } from '../types/game';
 import { GlossaryTerm } from './GlossaryPopover';
 import { CriticalResourceNotification } from '../game/resourceAlerts';
@@ -23,7 +24,6 @@ export const AriaGuideBar: React.FC<AriaGuideBarProps> = ({
   criticalNotice,
   onDismissCriticalNotice,
 }) => {
-  // Optional browser Web Speech API narration when player turns voice ON
   useEffect(() => {
     if (!state.ariaVoiceEnabled || typeof window === 'undefined' || !('speechSynthesis' in window)) {
       return;
@@ -39,7 +39,6 @@ export const AriaGuideBar: React.FC<AriaGuideBarProps> = ({
     }
   }, [state.ariaMessage, state.ariaVoiceEnabled]);
 
-  // Automatic brief ARIA voice notification when Power, Oxygen/Water, or Food enters critical state
   useEffect(() => {
     if (
       !criticalNotice ||
@@ -69,22 +68,22 @@ export const AriaGuideBar: React.FC<AriaGuideBarProps> = ({
   return (
     <div
       data-testid="aria-guide-bar"
-      className={`pointer-events-auto bg-slate-900/92 border rounded-xl px-3.5 py-2 shadow-xl flex flex-col gap-2 max-w-4xl mx-auto w-full transition-colors ${
-        criticalNotice ? 'border-rose-500/80' : 'border-cyan-500/40'
+      className={`pointer-events-auto bg-[#11141c]/95 border rounded-xl p-3 flex flex-col gap-2 max-w-4xl mx-auto w-full transition-colors duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        criticalNotice ? 'border-[#e5484d]/70' : 'border-[#eef0f5]/[0.08]'
       }`}
     >
       {criticalNotice && (
         <div
           role="alert"
           data-testid="aria-critical-notification"
-          className="bg-rose-950/90 border border-rose-500/80 rounded-lg px-2.5 py-1.5 flex items-center justify-between gap-2 animate-resource-pulse-red"
+          className="bg-[#1a1e28] border border-[#e5484d]/60 rounded-lg p-2 flex items-center justify-between gap-2 animate-resource-pulse-red"
         >
           <div className="flex items-center gap-2 min-w-0">
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-500/25 border border-rose-400/60 text-[10px] font-mono font-bold text-rose-200 shrink-0">
-              <span aria-hidden="true">🔊</span>
-              <span>ARIA VOICE ALERT · {criticalNotice.label}</span>
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#e5484d]/15 border border-[#e5484d]/40 text-xs font-mono text-[#e5484d] shrink-0">
+              <Volume2 className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+              <span>ARIA voice alert · {criticalNotice.label}</span>
             </span>
-            <p className="text-[11px] font-sans font-semibold text-rose-100 leading-snug">
+            <p className="text-xs font-sans font-medium text-[#eef0f5] leading-snug">
               {criticalNotice.bannerText}
             </p>
           </div>
@@ -93,50 +92,53 @@ export const AriaGuideBar: React.FC<AriaGuideBarProps> = ({
               type="button"
               onClick={onDismissCriticalNotice}
               aria-label="Dismiss ARIA critical resource alert"
-              className="text-rose-200 hover:text-white text-xs font-mono px-1 cursor-pointer shrink-0"
+              className="text-[#a3a9b8] hover:text-[#eef0f5] p-1 rounded-md hover:bg-[#11141c] cursor-pointer shrink-0 transition-colors duration-150"
             >
-              ✕
+              <X className="w-4 h-4" strokeWidth={1.5} />
             </button>
           )}
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 w-full">
-        <div className="flex items-start sm:items-center gap-2.5 min-w-0 flex-1">
-          {/* Friendly Robot Mascot Badge */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
+        <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
           <div
             aria-hidden="true"
-            className="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-400/70 flex items-center justify-center shrink-0 text-sm"
+            className="w-8 h-8 rounded-lg bg-[#1a1e28] border border-[#eef0f5]/10 flex items-center justify-center shrink-0 text-[#38bdf8]"
           >
-            🤖
+            <Bot className="w-4 h-4" strokeWidth={1.5} />
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-300">
-                ARIA CREW GUIDE
+              <span className="text-xs font-mono font-medium text-[#38bdf8]">
+                ARIA crew guide
               </span>
+              <span className="text-[#7a8296] text-xs">·</span>
               <GlossaryTerm
                 termKey="light-time delay"
-                label={state.planet === 'moon' ? 'Earth Link: ~1.3s' : 'Earth Link: 3–22 min delay'}
-                className="text-[10px] font-mono"
+                label={state.planet === 'moon' ? 'Earth link: ~1.3s' : 'Earth link: 3–22 min delay'}
+                className="text-xs font-mono"
               />
             </div>
-            <p className="text-xs text-slate-200 leading-snug line-clamp-2 font-sans mt-0.5">
+            <p className="text-xs text-[#a3a9b8] leading-snug line-clamp-2 font-sans mt-1">
               {state.ariaMessage}
             </p>
 
             {transit && !transit.delivered && (
               <div
                 data-testid="comms-transit-bar"
-                className="mt-1.5 bg-slate-950/90 border border-amber-500/50 rounded-lg px-2.5 py-1 space-y-1"
+                className="mt-2 bg-[#0b0d14] border border-[#e5a93b]/40 rounded-lg px-2.5 py-1.5 space-y-1"
               >
-                <div className="flex items-center justify-between text-[10px] font-mono text-amber-300">
-                  <span>📡 SIGNAL IN TRANSIT TO EARTH ({transit.realLightTimeLabel})</span>
+                <div className="flex items-center justify-between text-xs font-mono text-[#e5a93b]">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Radio className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+                    <span>Signal in transit to Earth ({transit.realLightTimeLabel})</span>
+                  </span>
                   <span className="tabular-nums">{transit.remainingSec.toFixed(1)}s left</span>
                 </div>
-                <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-[#1a1e28] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-amber-400 transition-all duration-150"
+                    className="h-full bg-[#e5a93b] transition-[transform,opacity] duration-150"
                     style={{ width: `${transitPct}%` }}
                   />
                 </div>
@@ -145,35 +147,46 @@ export const AriaGuideBar: React.FC<AriaGuideBarProps> = ({
           </div>
         </div>
 
-      <div className="flex items-center gap-1.5 shrink-0">
-        <button
-          type="button"
-          onClick={onAskMissionControl}
-          disabled={Boolean(transit && !transit.delivered)}
-          data-testid="ask-mission-control-btn"
-          className={`px-2.5 py-1.5 text-[11px] font-mono font-bold rounded-lg border transition-colors whitespace-nowrap ${
-            transit && !transit.delivered
-              ? 'bg-slate-800 border-slate-700 text-slate-500 cursor-wait'
-              : 'bg-cyan-500/15 border-cyan-400/60 text-cyan-200 hover:bg-cyan-500/25 cursor-pointer'
-          }`}
-        >
-          📡 Ask Mission Control
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={onAskMissionControl}
+            disabled={Boolean(transit && !transit.delivered)}
+            data-testid="ask-mission-control-btn"
+            className={`h-8 px-3 text-xs font-sans font-medium rounded-lg border transition-colors duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] inline-flex items-center gap-2 whitespace-nowrap ${
+              transit && !transit.delivered
+                ? 'bg-[#0b0d14] border-[#eef0f5]/[0.06] text-[#7a8296] cursor-wait'
+                : 'bg-[#1a1e28] border-[#eef0f5]/10 text-[#eef0f5] hover:border-[#38bdf8]/50 cursor-pointer'
+            }`}
+          >
+            <Radio className="w-4 h-4 shrink-0 text-[#38bdf8]" strokeWidth={1.5} />
+            <span>Ask Mission Control</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={onToggleVoice}
-          aria-pressed={state.ariaVoiceEnabled}
-          aria-label={state.ariaVoiceEnabled ? 'Turn off ARIA voice' : 'Turn on ARIA voice'}
-          className={`px-2 py-1.5 text-[11px] font-mono rounded-lg border transition-colors cursor-pointer ${
-            state.ariaVoiceEnabled
-              ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200 font-bold'
-              : 'bg-slate-800 border-slate-700 text-slate-300 hover:text-white'
-          }`}
-        >
-          {state.ariaVoiceEnabled ? '🔊 Voice ON' : '💬 Captions'}
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={onToggleVoice}
+            aria-pressed={state.ariaVoiceEnabled}
+            aria-label={state.ariaVoiceEnabled ? 'Turn off ARIA voice' : 'Turn on ARIA voice'}
+            className={`h-8 px-3 text-xs font-sans font-medium rounded-lg border transition-colors duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] inline-flex items-center gap-2 cursor-pointer ${
+              state.ariaVoiceEnabled
+                ? 'bg-[#1a1e28] border-[#4cc38a]/50 text-[#4cc38a]'
+                : 'bg-[#0b0d14] border-[#eef0f5]/[0.08] text-[#a3a9b8] hover:text-[#eef0f5]'
+            }`}
+          >
+            {state.ariaVoiceEnabled ? (
+              <>
+                <Volume2 className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                <span>Voice on</span>
+              </>
+            ) : (
+              <>
+                <MessageSquare className="w-4 h-4 shrink-0 text-[#7a8296]" strokeWidth={1.5} />
+                <span>Captions</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

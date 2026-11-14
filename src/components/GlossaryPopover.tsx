@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { HelpCircle, X } from 'lucide-react';
 import glossaryJson from '../data/glossary.json';
 
 export type GlossaryKey = keyof typeof glossaryJson.terms;
@@ -33,12 +34,10 @@ export const GlossaryTerm: React.FC<GlossaryTermProps> = ({
         }}
         aria-expanded={open}
         aria-label={`What does ${entry.term} mean?`}
-        className="inline-flex items-center gap-1 underline decoration-dotted decoration-cyan-400/70 underline-offset-2 text-cyan-300 hover:text-cyan-200 cursor-pointer font-medium"
+        className="inline-flex items-center gap-1 underline decoration-dotted decoration-[#38bdf8]/60 underline-offset-2 text-[#38bdf8] hover:text-[#eef0f5] cursor-pointer font-normal transition-colors duration-150"
       >
         <span>{label || entry.term}</span>
-        <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-cyan-500/20 border border-cyan-400/50 text-[9px] font-mono font-bold text-cyan-300">
-          ?
-        </span>
+        <HelpCircle className="w-3.5 h-3.5 text-[#7a8296] shrink-0" strokeWidth={1.5} />
       </button>
 
       {open && (
@@ -46,26 +45,26 @@ export const GlossaryTerm: React.FC<GlossaryTermProps> = ({
           role="dialog"
           aria-label={`Definition of ${entry.term}`}
           onClick={(e) => e.stopPropagation()}
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 sm:absolute sm:bottom-full sm:left-0 sm:translate-x-0 sm:mb-2 w-72 bg-slate-950 border border-cyan-500/70 rounded-xl p-3 shadow-2xl z-50 pointer-events-auto text-left space-y-1.5"
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 sm:absolute sm:bottom-full sm:left-0 sm:translate-x-0 sm:mb-2 w-72 bg-[#11141c] border border-[#eef0f5]/10 rounded-xl p-3 z-50 pointer-events-auto text-left space-y-1.5"
         >
           <div className="flex items-start justify-between gap-2">
             <div>
-              <span className="text-[9px] font-mono uppercase tracking-wider text-cyan-400 font-bold block">
-                WHAT DOES THIS MEAN?
+              <span className="text-xs font-mono text-[#7a8296] block">
+                Space term definition
               </span>
-              <h4 className="text-xs font-bold text-white">{entry.term}</h4>
+              <h4 className="text-xs font-medium text-[#eef0f5] mt-0.5">{entry.term}</h4>
             </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label={`Close ${entry.term} explanation`}
-              className="text-slate-400 hover:text-white text-xs px-1 cursor-pointer"
+              className="text-[#7a8296] hover:text-[#eef0f5] p-1 rounded-md hover:bg-[#1a1e28] cursor-pointer"
             >
-              ✕
+              <X className="w-3.5 h-3.5" strokeWidth={1.5} />
             </button>
           </div>
-          <p className="text-xs text-cyan-100 font-medium leading-snug">{entry.short}</p>
-          <p className="text-[11px] text-slate-300 leading-relaxed">{entry.detail}</p>
+          <p className="text-xs text-[#38bdf8] font-medium leading-snug">{entry.short}</p>
+          <p className="text-xs text-[#a3a9b8] leading-relaxed">{entry.detail}</p>
         </div>
       )}
     </span>
@@ -87,27 +86,28 @@ export const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose })
 
   return (
     <div
-      className="fixed inset-0 z-50 pointer-events-auto bg-slate-950/85 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 pointer-events-auto bg-[#07080d]/85 flex items-center justify-center p-4"
       role="dialog"
       aria-label="Space Terms Dictionary"
     >
-      <div className="bg-slate-900 border border-cyan-500/50 rounded-2xl max-w-2xl w-full max-h-[82vh] flex flex-col shadow-2xl">
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+      <div className="bg-[#11141c] border border-[#eef0f5]/10 rounded-2xl max-w-2xl w-full max-h-[82vh] flex flex-col">
+        <div className="p-4 border-b border-[#eef0f5]/[0.08] flex items-center justify-between gap-3">
           <div>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 font-bold block">
-              JUNIOR ASTRONAUT FIELD GUIDE
+            <span className="text-xs font-mono text-[#7a8296] block">
+              Junior astronaut field guide
             </span>
-            <h3 className="text-lg font-bold text-white font-display">
-              What Does This Mean? Space Terms
+            <h3 className="text-lg font-medium text-[#eef0f5] font-display mt-0.5">
+              Space terms glossary
             </h3>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close space terms dictionary"
-            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono cursor-pointer"
+            className="h-8 px-3 rounded-lg bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#eef0f5]/10 text-[#a3a9b8] hover:text-[#eef0f5] text-xs font-sans inline-flex items-center gap-1.5 cursor-pointer"
           >
-            Close ✕
+            <span>Close</span>
+            <X className="w-3.5 h-3.5" strokeWidth={1.5} />
           </button>
         </div>
 
@@ -115,11 +115,11 @@ export const GlossaryModal: React.FC<GlossaryModalProps> = ({ isOpen, onClose })
           {entries.map(([key, item]) => (
             <div
               key={key}
-              className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 space-y-1"
+              className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-xl p-3 space-y-1.5"
             >
-              <h4 className="text-xs font-bold text-cyan-300">{item.term}</h4>
-              <p className="text-xs text-white font-medium leading-snug">{item.short}</p>
-              <p className="text-[11px] text-slate-400 leading-relaxed">{item.detail}</p>
+              <h4 className="text-xs font-medium text-[#38bdf8]">{item.term}</h4>
+              <p className="text-xs text-[#eef0f5] font-medium leading-snug">{item.short}</p>
+              <p className="text-xs text-[#a3a9b8] leading-relaxed">{item.detail}</p>
             </div>
           ))}
         </div>

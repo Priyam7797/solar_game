@@ -31,11 +31,11 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     startSec: 0,
     endSec: 15,
     targetId: 'telemetry-bar',
-    badge: '0s – 15s · CORE METERS',
-    title: 'Watch Your 3 Core Resources + Shield',
+    badge: '0s – 15s · Core meters',
+    title: 'Watch your 3 core resources and shield',
     description:
-      'Keep an eye on POWER, LIFE SUPPORT (tap to split Oxygen & Water), FOOD (~90 days of rations + greenhouse crops), and SHIELD. Every meter shows sols remaining and a color-independent status icon.',
-    actionPrompt: 'Try clicking LIFE SUPPORT to inspect Oxygen vs. Water!',
+      'Keep an eye on Power, Life support (tap to split Oxygen & Water), Food (~90 days of rations plus greenhouse crops), and Shield. Every meter shows sols remaining and a color-independent status icon.',
+    actionPrompt: 'Click Life support to inspect Oxygen vs. Water',
   },
   {
     id: 'module_placement',
@@ -43,11 +43,11 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     startSec: 15,
     endSec: 30,
     targetId: 'build-dock',
-    badge: '15s – 30s · COST CARDS & BUILDING',
-    title: 'Read Cost Cards Before Building',
+    badge: '15s – 30s · Cost cards & building',
+    title: 'Read cost cards before building',
     description:
-      'Every build has NO free choices! Tap any module card below to read its GAIN, PAY, and RISK Cost Card, then place it on open Moon or Mars ground.',
-    actionPrompt: 'Click a build module below to inspect its Cost Card!',
+      'Every build involves a trade-off. Select any module card below to review its Gain, Pay, and Risk card, then place it on open Moon or Mars ground.',
+    actionPrompt: 'Select a build module below to inspect its cost card',
   },
   {
     id: 'mission_controls',
@@ -55,11 +55,11 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     startSec: 30,
     endSec: 45,
     targetId: 'time-controls',
-    badge: '30s – 45s · TIME-LAPSE & TOOLS',
-    title: 'Fast-Forward (1x–10x) & Crew Tools',
+    badge: '30s – 45s · Time-lapse & tools',
+    title: 'Fast-forward (1x–10x) & crew tools',
     description:
-      'Use 1x, 2x, 5x, or 10x fast-forward — time auto-pauses when any Crisis arrives! Also check Priority Board, Garden Guide, Research [R], Log [L], and Data & Sources.',
-    actionPrompt: 'Try speeding up time or checking today’s Priority Board.',
+      'Use 1x, 2x, 5x, or 10x fast-forward — simulation auto-pauses when any Crisis arrives. Also check Priority Board, Garden Guide, Research [R], Log [L], and Data & Sources.',
+    actionPrompt: 'Speed up time or open today’s Priority Board',
   },
   {
     id: 'crew_radiation',
@@ -67,11 +67,11 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
     startSec: 45,
     endSec: 60,
     targetId: 'crew-rad-bar',
-    badge: '45s – 60s · SOLAR STORM SAFETY',
-    title: 'Protect Your Crew From Solar Flares',
+    badge: '45s – 60s · Solar storm safety',
+    title: 'Protect your crew from solar flares',
     description:
-      'NASA DONKI alerts warn you before solar particle waves hit. Use BUNKER CREW during flares or sinter a 1m regolith roof over your Habitat!',
-    actionPrompt: 'You are ready to command SOL BASE — stay sharp!',
+      'NASA DONKI alerts warn you before solar particle waves hit. Use Bunker crew during flares or sinter a 1 m regolith roof over your Habitat.',
+    actionPrompt: 'You are ready to command SOL BASE',
   },
 ];
 

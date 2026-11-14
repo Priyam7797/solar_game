@@ -257,7 +257,7 @@ export default function App() {
   const askMissionControl = useCallback(() => {
     sound.playClick();
     setGameState((prev) =>
-      sendMissionControlMessage(prev, 'Mission Control, send latest orbital weather and power advice!')
+      sendMissionControlMessage(prev, 'Mission Control, send latest orbital weather and power telemetry.')
     );
   }, []);
 
@@ -293,7 +293,7 @@ export default function App() {
       subtitle: 'Drive the outpost rover to nearby craters for ice, metal, regolith, and science samples.',
       gain: '+95 kg Metal, +130 kg Regolith, +22 L Water Ice, +16 Science Points',
       pay: '-8 kg Oxygen (O₂), -18 kWh Battery',
-      risk: 'Uses breathable Oxygen and Battery! Exposure jumps by +14 mSv if launched during High Solar Flare Risk.',
+      risk: 'Uses breathable Oxygen and Battery. Radiation exposure adds +14 mSv during High Solar Flare Risk.',
       oxygenCost: 8,
       batteryCost: 18,
     });
@@ -570,7 +570,7 @@ export default function App() {
   }, [startGame, togglePause, toggleAudio, toggleMissionLog, toggleResearchTree, setTimeSpeed]);
 
   return (
-    <div className="relative w-full h-full overflow-hidden bg-slate-950">
+    <div className="relative w-full h-full overflow-hidden bg-[#07080d]">
       <div ref={mountRef} className="absolute inset-0 z-0" />
 
       {gameState.phase === 'title' && (
@@ -710,25 +710,25 @@ export default function App() {
           onClose={() => setIsEndgameDebriefOpen(false)}
           realPlannerAnswerOverride={
             gameState.phase === 'victory'
-              ? 'NASA mission planners balance backup nuclear power (Kilopower), closed-loop water recycling, and Storm Shelters so solar storms or dust storms never catch the crew off guard.'
+              ? 'NASA mission planners balance backup nuclear power (Kilopower), closed-loop water recycling, and Storm Shelters so solar storms or dust storms do not threaten the crew.'
               : gameState.resources.oxygenKg <= 0.5
-              ? 'When batteries hit 0%, water electrolysis shuts off and stops making O₂! Keep Power green first.'
+              ? 'When batteries hit 0%, water electrolysis shuts off and stops making O₂. Keep Power positive first.'
               : gameState.resources.waterLiters <= 0.5
               ? 'Even 95% water recycling needs ice refills or fewer heavy consumers when Greenhouse water demand grows.'
               : gameState.crew.radiationDoseMsv > 260
-              ? 'Real NASA crews shelter behind water walls or sintered regolith domes as soon as DONKI spots a solar flare.'
-              : 'Build backup Kilopower or Battery Banks early so Oxygen recycling never stops during nights or dust storms.'
+              ? 'Real NASA crews shelter behind water walls or sintered regolith domes as soon as DONKI detects a solar flare.'
+              : 'Build backup Kilopower or Battery Banks early so Oxygen recycling stays steady during nights or dust storms.'
           }
           tryNextTipOverride={
             gameState.phase === 'victory'
-              ? 'Try Mars or Commander difficulty next to master 3–22 minute Earth radio delays and tighter resource buffers!'
+              ? 'Try Mars or Commander difficulty next to manage 3 to 22 minute Earth radio delays and tighter resource buffers.'
               : gameState.resources.oxygenKg <= 0.5
               ? 'Add a Battery Bank or Kilopower Backup before expanding heavy modules.'
               : gameState.resources.waterLiters <= 0.5
-              ? 'Follow the Garden Guide (Aeroponic Mist uses 95% less water) and send Rover ice trips!'
+              ? 'Use Aeroponic Mist in the Garden Guide (95% less water) and send Rover ice trips.'
               : gameState.crew.radiationDoseMsv > 260
-              ? 'Hit BUNKER CREW as soon as the Flare Risk indicator turns amber/red!'
-              : 'Check the Chain-Reaction alert early and build a Greenhouse before stored food rations shrink!'
+              ? 'Select Bunker Crew as soon as the flare risk badge turns amber or red.'
+              : 'Respond to Chain-Reaction warnings early and build a Greenhouse before rations run low.'
           }
         />
       )}

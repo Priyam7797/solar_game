@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { BarChart3 } from 'lucide-react';
 import { GameState } from '../types/game';
 import { SCENARIOS } from '../game/modulesData';
 import { MissionDebrief } from './MissionDebrief';
@@ -20,40 +21,43 @@ export const PauseModal: React.FC<PauseModalProps> = ({
   onReturnToTitle,
 }) => {
   return (
-    <div className="absolute inset-0 bg-slate-950/80 z-30 flex items-center justify-center p-4">
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-5 text-center">
+    <div className="absolute inset-0 bg-[#07080d]/80 z-30 flex items-center justify-center p-4">
+      <div className="bg-[#11141c] border border-[#eef0f5]/10 rounded-2xl max-w-sm w-full p-6 space-y-5 text-center">
         <div>
-          <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">
-            MISSION SUSPENDED
+          <span className="text-xs font-mono text-[#7a8296] block">
+            Mission suspended
           </span>
-          <h2 className="text-2xl font-bold text-white font-display mt-1">Simulation Paused</h2>
+          <h2 className="text-2xl font-medium text-[#eef0f5] font-display mt-1">Simulation paused</h2>
         </div>
 
-        <p className="text-xs text-slate-300 leading-relaxed">
-          Take your time checking Cost Cards, Life Support, or Research. Press Resume whenever your crew is ready!
+        <p className="text-xs text-[#a3a9b8] leading-relaxed">
+          Review Cost Cards, Life Support, or Research while simulation time is held. Resume when the crew is ready.
         </p>
 
-        <div className="space-y-2 pt-2">
+        <div className="space-y-2 pt-1">
           <button
             type="button"
             onClick={onResume}
-            className="w-full py-2.5 px-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm rounded-lg transition-colors cursor-pointer"
+            className="w-full h-10 px-4 bg-[#eef0f5] hover:bg-white text-[#07080d] font-medium text-sm rounded-lg transition-colors duration-150 inline-flex items-center justify-center gap-2 cursor-pointer"
           >
-            Resume Mission [Esc]
+            <span>Resume mission</span>
+            <kbd className="text-xs font-mono bg-[#07080d]/10 border border-[#07080d]/15 px-1.5 py-0.5 rounded-md">
+              Esc
+            </kbd>
           </button>
           <button
             type="button"
             onClick={onRestart}
-            className="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs rounded-lg transition-colors cursor-pointer"
+            className="w-full h-9 px-4 bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#eef0f5]/10 text-[#eef0f5] font-medium text-xs rounded-lg transition-colors duration-150 cursor-pointer"
           >
-            Restart Current Mission
+            Restart current mission
           </button>
           <button
             type="button"
             onClick={onReturnToTitle}
-            className="w-full py-2 px-4 text-slate-400 hover:text-slate-200 text-xs transition-colors cursor-pointer"
+            className="w-full h-8 px-4 text-[#a3a9b8] hover:text-[#eef0f5] text-xs transition-colors duration-150 cursor-pointer"
           >
-            Return to Site Selection
+            Return to site selection
           </button>
         </div>
       </div>
@@ -68,7 +72,6 @@ interface OutcomeModalProps {
   onOpenDebrief?: () => void;
 }
 
-
 export const VictoryModal: React.FC<OutcomeModalProps> = ({
   state,
   onPlayAgain,
@@ -79,42 +82,42 @@ export const VictoryModal: React.FC<OutcomeModalProps> = ({
 
   return (
     <div
-      className="absolute inset-0 bg-slate-950/85 z-30 flex items-center justify-center p-4"
+      className="absolute inset-0 bg-[#07080d]/85 z-30 flex items-center justify-center p-4"
       data-testid="victory-modal"
     >
-      <div className="bg-slate-900 border border-emerald-500/50 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+      <div className="bg-[#11141c] border border-[#eef0f5]/10 rounded-2xl max-w-2xl w-full p-6 space-y-4">
         <div className="text-center">
-          <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest font-semibold block">
-            MISSION DEBRIEF · OUTPOST COMPLETE
+          <span className="text-xs font-mono text-[#4cc38a] block">
+            Mission debrief · Outpost complete
           </span>
-          <h2 className="text-2xl font-bold text-white font-display mt-0.5">
-            Congratulations Commander — Crew Thrived!
+          <h2 className="text-2xl font-medium text-[#eef0f5] font-display mt-1">
+            Outpost operations completed
           </h2>
-          <p className="text-xs text-slate-300 mt-1">
+          <p className="text-xs text-[#a3a9b8] mt-1">
             Completed {state.targetSols || scenario.targetSols} Sols at {state.planet === 'moon' ? 'Shackleton Crater, Moon' : 'Jezero Crater, Mars'} ({state.difficulty} difficulty).
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 text-center">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#0b0d14] p-3 rounded-xl border border-[#eef0f5]/[0.08] text-center">
           <div>
-            <div className="text-[10px] font-mono text-slate-400 uppercase">SOLS</div>
-            <div className="text-base font-bold text-white tabular-nums">{state.environment.solNumber}</div>
+            <div className="text-xs font-mono text-[#7a8296]">Sols</div>
+            <div className="text-base font-medium text-[#eef0f5] tabular-nums">{state.environment.solNumber}</div>
           </div>
           <div>
-            <div className="text-[10px] font-mono text-slate-400 uppercase">FRESH FOOD</div>
-            <div className="text-base font-bold text-emerald-400 tabular-nums">
+            <div className="text-xs font-mono text-[#7a8296]">Fresh food</div>
+            <div className="text-base font-medium text-[#4cc38a] tabular-nums">
               {Math.round(state.stats.foodHarvestedKg)} kg
             </div>
           </div>
           <div>
-            <div className="text-[10px] font-mono text-slate-400 uppercase">WATER SAVED</div>
-            <div className="text-base font-bold text-sky-400 tabular-nums">
+            <div className="text-xs font-mono text-[#7a8296]">Water saved</div>
+            <div className="text-base font-medium text-[#38bdf8] tabular-nums">
               {Math.round(state.stats.waterRecycledLiters)} L
             </div>
           </div>
           <div>
-            <div className="text-[10px] font-mono text-slate-400 uppercase">CREW DOSE</div>
-            <div className="text-base font-bold text-cyan-400 tabular-nums">
+            <div className="text-xs font-mono text-[#7a8296]">Crew dose</div>
+            <div className="text-base font-medium text-[#eef0f5] tabular-nums">
               {Math.round(state.stats.maxDoseMsv)} mSv
             </div>
           </div>
@@ -125,16 +128,17 @@ export const VictoryModal: React.FC<OutcomeModalProps> = ({
             type="button"
             onClick={onOpenDebrief}
             data-testid="reopen-debrief-btn"
-            className="w-full py-2.5 px-4 bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/60 text-cyan-200 font-mono font-bold text-xs rounded-lg transition-colors cursor-pointer"
+            className="w-full h-10 px-4 bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#38bdf8]/40 text-[#eef0f5] font-mono text-xs rounded-lg inline-flex items-center justify-center gap-2 transition-colors duration-150 cursor-pointer tabular-nums"
           >
-            📊 Open Mission Debrief &amp; Take-Home Report ({state.decisionTimeline.length} Decisions)
+            <BarChart3 className="w-4 h-4 text-[#38bdf8]" strokeWidth={1.5} />
+            <span>Open mission debrief &amp; take-home report ({state.decisionTimeline.length} decisions)</span>
           </button>
         ) : (
           <MissionDebrief
             state={state}
             mode="embedded"
-            realPlannerAnswerOverride="NASA mission planners balance backup nuclear power (Kilopower), closed-loop water recycling, and Storm Shelters so solar storms or dust storms never catch the crew off guard."
-            tryNextTipOverride="Try Mars or Commander difficulty next to master 3–22 minute Earth radio delays and tighter resource buffers!"
+            realPlannerAnswerOverride="NASA mission planners balance backup nuclear power (Kilopower), closed-loop water recycling, and Storm Shelters so solar storms or dust storms do not threaten the crew."
+            tryNextTipOverride="Try Mars or Commander difficulty next to manage 3 to 22 minute Earth radio delays and tighter resource buffers."
           />
         )}
 
@@ -143,14 +147,14 @@ export const VictoryModal: React.FC<OutcomeModalProps> = ({
             type="button"
             data-start="true"
             onClick={onPlayAgain}
-            className="flex-1 py-3 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm rounded-lg transition-colors cursor-pointer"
+            className="flex-1 h-10 px-4 bg-[#eef0f5] hover:bg-white text-[#07080d] font-medium text-sm rounded-lg transition-colors duration-150 cursor-pointer"
           >
-            Play Again / Next Mission
+            Play again / Next mission
           </button>
           <button
             type="button"
             onClick={onReturnToTitle}
-            className="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-lg transition-colors cursor-pointer"
+            className="h-10 px-4 bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#eef0f5]/10 text-[#a3a9b8] hover:text-[#eef0f5] font-medium text-xs rounded-lg transition-colors duration-150 cursor-pointer"
           >
             Switch Moon / Mars
           </button>
@@ -166,43 +170,43 @@ export const GameOverModal: React.FC<OutcomeModalProps> = ({
   onReturnToTitle,
   onOpenDebrief,
 }) => {
-  let failureCause = 'Life Support Recovery Triggered';
+  let failureCause = 'Life support recovery triggered';
   let stemAdvice =
-    'Build backup Kilopower or Battery Banks early so Oxygen recycling never stops during nights or dust storms.';
-  let tryNext = 'Check the Chain-Reaction alert early and build a Greenhouse before stored food rations shrink!';
+    'Build backup Kilopower or Battery Banks early so Oxygen recycling stays steady during nights or dust storms.';
+  let tryNext = 'Respond to Chain-Reaction warnings early and build a Greenhouse before stored food rations run low.';
 
   if (state.resources.oxygenKg <= 0.5) {
-    failureCause = 'Low Oxygen Reserve';
+    failureCause = 'Low Oxygen reserve';
     stemAdvice =
-      'When batteries hit 0%, water electrolysis shuts off and stops making O₂! Keep Power green first.';
+      'When batteries hit 0%, water electrolysis shuts off and stops making O₂. Keep Power positive first.';
     tryNext = 'Add a Battery Bank or Kilopower Backup before expanding heavy modules.';
   } else if (state.resources.waterLiters <= 0.5) {
-    failureCause = 'Low Water Reserve';
+    failureCause = 'Low Water reserve';
     stemAdvice =
       'Even 95% water recycling needs ice refills or fewer heavy consumers when Greenhouse water demand grows.';
-    tryNext = 'Follow the Garden Guide (Aeroponic Mist uses 95% less water) and send Rover ice trips!';
+    tryNext = 'Use Aeroponic Mist in the Garden Guide (95% less water) and send Rover ice trips.';
   } else if (state.crew.radiationDoseMsv > 260) {
-    failureCause = 'Radiation Safety Limit Exceeded';
+    failureCause = 'Radiation safety limit exceeded';
     stemAdvice =
-      'Real NASA crews shelter behind water walls or sintered regolith domes as soon as DONKI spots a solar flare.';
-    tryNext = 'Hit BUNKER CREW as soon as the Flare Risk indicator turns amber/red!';
+      'Real NASA crews shelter behind water walls or sintered regolith domes as soon as DONKI detects a solar flare.';
+    tryNext = 'Select Bunker Crew as soon as the flare risk badge turns amber or red.';
   }
 
   return (
     <div
-      className="absolute inset-0 bg-slate-950/85 z-30 flex items-center justify-center p-4"
+      className="absolute inset-0 bg-[#07080d]/85 z-30 flex items-center justify-center p-4"
       data-testid="gameover-modal"
     >
-      <div className="bg-slate-900 border border-amber-500/60 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+      <div className="bg-[#11141c] border border-[#eef0f5]/10 rounded-2xl max-w-2xl w-full p-6 space-y-4">
         <div className="text-center">
-          <span className="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold block">
-            MISSION DEBRIEF · CREW EVACUATED SAFELY
+          <span className="text-xs font-mono text-[#e5a93b] block">
+            Mission debrief · Crew evacuated safely
           </span>
-          <h2 className="text-2xl font-bold text-white font-display mt-0.5">
-            Training Setback: {failureCause}
+          <h2 className="text-2xl font-medium text-[#eef0f5] font-display mt-1">
+            Training setback: {failureCause}
           </h2>
-          <p className="text-xs text-slate-300 mt-1">
-            Your astronauts returned safely to orbit after {state.environment.solNumber} Sols — let’s see what NASA planners recommend!
+          <p className="text-xs text-[#a3a9b8] mt-1 tabular-nums">
+            Astronauts returned safely to orbit after {state.environment.solNumber} Sols. Review NASA planner guidance below.
           </p>
         </div>
 
@@ -211,9 +215,10 @@ export const GameOverModal: React.FC<OutcomeModalProps> = ({
             type="button"
             onClick={onOpenDebrief}
             data-testid="reopen-debrief-btn"
-            className="w-full py-2.5 px-4 bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/60 text-cyan-200 font-mono font-bold text-xs rounded-lg transition-colors cursor-pointer"
+            className="w-full h-10 px-4 bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#38bdf8]/40 text-[#eef0f5] font-mono text-xs rounded-lg inline-flex items-center justify-center gap-2 transition-colors duration-150 cursor-pointer tabular-nums"
           >
-            📊 Open Mission Debrief &amp; Take-Home Report ({state.decisionTimeline.length} Decisions)
+            <BarChart3 className="w-4 h-4 text-[#38bdf8]" strokeWidth={1.5} />
+            <span>Open mission debrief &amp; take-home report ({state.decisionTimeline.length} decisions)</span>
           </button>
         ) : (
           <MissionDebrief
@@ -229,16 +234,16 @@ export const GameOverModal: React.FC<OutcomeModalProps> = ({
             type="button"
             data-start="true"
             onClick={onPlayAgain}
-            className="flex-1 py-3 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm rounded-lg transition-colors cursor-pointer"
+            className="flex-1 h-10 px-4 bg-[#eef0f5] hover:bg-white text-[#07080d] font-medium text-sm rounded-lg transition-colors duration-150 cursor-pointer"
           >
-            Try Again With New Plan
+            Try again with new plan
           </button>
           <button
             type="button"
             onClick={onReturnToTitle}
-            className="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-xs rounded-lg transition-colors cursor-pointer"
+            className="h-10 px-4 bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#eef0f5]/10 text-[#a3a9b8] hover:text-[#eef0f5] font-medium text-xs rounded-lg transition-colors duration-150 cursor-pointer"
           >
-            Site Selection
+            Site selection
           </button>
         </div>
       </div>

@@ -4,6 +4,24 @@
  */
 
 import React, { useMemo, useState } from 'react';
+import {
+  AlertTriangle,
+  Award,
+  Backpack,
+  Car,
+  Check,
+  ClipboardCheck,
+  Compass,
+  FileText,
+  Globe,
+  Printer,
+  Satellite,
+  Scale,
+  ScrollText,
+  Shield,
+  Sprout,
+  X,
+} from 'lucide-react';
 import { DecisionCategory, GameState, NasaDataReference } from '../types/game';
 import { buildEnrichedDebriefSummary } from '../game/debriefData';
 import {
@@ -31,102 +49,120 @@ const CATEGORY_META: Record<
   { label: string; badgeClass: string; dotClass: string }
 > = {
   build: {
-    label: 'MODULE BUILD',
-    badgeClass: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40',
-    dotClass: 'bg-cyan-400',
+    label: 'Module build',
+    badgeClass: 'bg-[#38bdf8]/10 text-[#38bdf8] border-[#38bdf8]/30',
+    dotClass: 'bg-[#38bdf8]',
   },
   shield: {
-    label: 'RAD SHIELD',
-    badgeClass: 'bg-amber-500/15 text-amber-300 border-amber-500/40',
-    dotClass: 'bg-amber-400',
+    label: 'Rad shield',
+    badgeClass: 'bg-[#e5a93b]/10 text-[#e5a93b] border-[#e5a93b]/30',
+    dotClass: 'bg-[#e5a93b]',
   },
   expedition: {
-    label: 'ROVER TRIP',
-    badgeClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40',
-    dotClass: 'bg-emerald-400',
+    label: 'Rover trip',
+    badgeClass: 'bg-[#4cc38a]/10 text-[#4cc38a] border-[#4cc38a]/30',
+    dotClass: 'bg-[#4cc38a]',
   },
   crisis: {
-    label: 'CRISIS RESPONSE',
-    badgeClass: 'bg-rose-500/15 text-rose-300 border-rose-500/40',
-    dotClass: 'bg-rose-400',
+    label: 'Crisis response',
+    badgeClass: 'bg-[#e5484d]/10 text-[#e5484d] border-[#e5484d]/30',
+    dotClass: 'bg-[#e5484d]',
   },
   research: {
-    label: 'R&D UNLOCK',
-    badgeClass: 'bg-purple-500/15 text-purple-300 border-purple-500/40',
-    dotClass: 'bg-purple-400',
+    label: 'R&D unlock',
+    badgeClass: 'bg-[#a3a9b8]/10 text-[#eef0f5] border-[#eef0f5]/20',
+    dotClass: 'bg-[#eef0f5]',
   },
   maintenance: {
-    label: 'MAINTENANCE',
-    badgeClass: 'bg-sky-500/15 text-sky-300 border-sky-500/40',
-    dotClass: 'bg-sky-400',
+    label: 'Maintenance',
+    badgeClass: 'bg-[#38bdf8]/10 text-[#38bdf8] border-[#38bdf8]/30',
+    dotClass: 'bg-[#38bdf8]',
   },
   priority: {
-    label: 'PRIORITY PLAN',
-    badgeClass: 'bg-yellow-500/15 text-yellow-300 border-yellow-500/40',
-    dotClass: 'bg-yellow-400',
+    label: 'Priority plan',
+    badgeClass: 'bg-[#e5a93b]/10 text-[#e5a93b] border-[#e5a93b]/30',
+    dotClass: 'bg-[#e5a93b]',
   },
 };
+
+function renderBadgeIcon(badgeId: string) {
+  switch (badgeId) {
+    case 'badge_tradeoff_thinker':
+      return <Scale className="w-4 h-4 shrink-0 text-[#7a8296]" strokeWidth={1.5} />;
+    case 'badge_storm_guardian':
+      return <Shield className="w-4 h-4 shrink-0 text-[#7a8296]" strokeWidth={1.5} />;
+    case 'badge_space_botanist':
+      return <Sprout className="w-4 h-4 shrink-0 text-[#7a8296]" strokeWidth={1.5} />;
+    case 'badge_mission_planner':
+      return <ClipboardCheck className="w-4 h-4 shrink-0 text-[#7a8296]" strokeWidth={1.5} />;
+    case 'badge_rover_explorer':
+      return <Car className="w-4 h-4 shrink-0 text-[#7a8296]" strokeWidth={1.5} />;
+    default:
+      return <Globe className="w-4 h-4 shrink-0 text-[#7a8296]" strokeWidth={1.5} />;
+  }
+}
 
 const NasaLinkBox: React.FC<{ nasaRef: NasaDataReference; compact?: boolean }> = ({
   nasaRef,
   compact = false,
 }) => (
-  <div className="bg-cyan-950/30 border border-cyan-500/35 rounded-lg p-2.5 space-y-1">
+  <div className="bg-[#11141c] border border-[#eef0f5]/[0.08] rounded-lg p-3 space-y-1.5">
     <div className="flex items-center justify-between gap-2 flex-wrap">
-      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-300">
-        🛰️ REAL NASA DATA · {nasaRef.sourceProgram} ({nasaRef.recordId})
+      <span className="text-xs font-mono text-[#38bdf8] inline-flex items-center gap-1.5">
+        <Satellite className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+        <span>Real NASA data · {nasaRef.sourceProgram} ({nasaRef.recordId})</span>
       </span>
       <span
-        className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border ${
+        className={`text-xs font-mono px-2 py-0.5 rounded-md border ${
           nasaRef.sourceBadge === 'LIVE'
-            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-            : 'bg-slate-900 text-amber-300 border-slate-700'
+            ? 'bg-[#4cc38a]/15 text-[#4cc38a] border-[#4cc38a]/35'
+            : 'bg-[#1a1e28] text-[#e5a93b] border-[#eef0f5]/[0.08]'
         }`}
       >
-        {nasaRef.sourceBadge}
+        {nasaRef.sourceBadge === 'LIVE' ? 'Live' : 'Archived'}
       </span>
     </div>
-    <div className="text-xs font-semibold text-white">{nasaRef.title}</div>
-    <div className="text-[10px] font-mono text-slate-400">{nasaRef.dateOrStudy}</div>
+    <div className="text-xs font-medium text-[#eef0f5]">{nasaRef.title}</div>
+    <div className="text-xs font-mono text-[#7a8296]">{nasaRef.dateOrStudy}</div>
     {nasaRef.donkiMetrics && (
       <div
         data-testid="donki-metrics-grid"
-        className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1 font-mono tabular-nums"
+        className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-mono tabular-nums"
       >
-        <div className="bg-slate-950/85 border border-cyan-500/25 rounded px-2 py-1">
-          <div className="text-[9px] text-slate-400 uppercase">GOES CLASS</div>
-          <div className="text-[11px] font-bold text-rose-300">
+        <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-md px-2.5 py-1.5">
+          <div className="text-xs text-[#7a8296]">GOES class</div>
+          <div className="text-xs font-medium text-[#e5484d]">
             {nasaRef.donkiMetrics.flareClass} ({nasaRef.donkiMetrics.eventType})
           </div>
         </div>
-        <div className="bg-slate-950/85 border border-cyan-500/25 rounded px-2 py-1">
-          <div className="text-[9px] text-slate-400 uppercase">SUNSPOT REGION</div>
-          <div className="text-[11px] font-bold text-amber-200">
+        <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-md px-2.5 py-1.5">
+          <div className="text-xs text-[#7a8296]">Sunspot region</div>
+          <div className="text-xs font-medium text-[#e5a93b]">
             {nasaRef.donkiMetrics.activeRegion}
           </div>
         </div>
-        <div className="bg-slate-950/85 border border-cyan-500/25 rounded px-2 py-1">
-          <div className="text-[9px] text-slate-400 uppercase">PROTON FLUX</div>
-          <div className="text-[11px] font-bold text-cyan-200">
+        <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-md px-2.5 py-1.5">
+          <div className="text-xs text-[#7a8296]">Proton flux</div>
+          <div className="text-xs font-medium text-[#38bdf8]">
             {nasaRef.donkiMetrics.protonFluxPfu} pfu
           </div>
         </div>
-        <div className="bg-slate-950/85 border border-cyan-500/25 rounded px-2 py-1">
-          <div className="text-[9px] text-slate-400 uppercase">CME · Kp INDEX</div>
-          <div className="text-[11px] font-bold text-emerald-200">
+        <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-md px-2.5 py-1.5">
+          <div className="text-xs text-[#7a8296]">CME · Kp index</div>
+          <div className="text-xs font-medium text-[#4cc38a]">
             {nasaRef.donkiMetrics.cmeSpeedKmS} km/s · Kp {nasaRef.donkiMetrics.kpIndex}
           </div>
         </div>
       </div>
     )}
     {!compact && (
-      <p className="text-[11px] text-slate-200 leading-snug">{nasaRef.summary}</p>
+      <p className="text-xs text-[#a3a9b8] leading-snug">{nasaRef.summary}</p>
     )}
-    <div className="text-[11px] text-emerald-200 pt-1 border-t border-cyan-500/20">
-      <strong className="font-mono text-[10px] uppercase text-emerald-300 mr-1">
-        Real Planner Lesson:
-      </strong>
-      {nasaRef.plannerTakeaway}
+    <div className="text-xs text-[#a3a9b8] pt-1.5 border-t border-[#eef0f5]/[0.08]">
+      <span className="font-mono text-[#4cc38a] mr-1.5">
+        Real planner lesson:
+      </span>
+      <span>{nasaRef.plannerTakeaway}</span>
     </div>
   </div>
 );
@@ -184,7 +220,7 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
   };
 
   const handlePrintReport = () => {
-    setExportFeedback('Prepared printable classroom summary!');
+    setExportFeedback('Prepared printable classroom summary');
     if (typeof window !== 'undefined' && typeof window.print === 'function') {
       window.print();
     }
@@ -209,14 +245,14 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
   const content = (
     <div className="space-y-3" data-testid="mission-debrief-content">
       {/* Take-Home Student Report Export Bar */}
-      <div className="bg-slate-950/90 border border-cyan-500/35 rounded-xl p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-base shrink-0" aria-hidden="true">🎒</span>
+      <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <Backpack className="w-4 h-4 text-[#7a8296] shrink-0" strokeWidth={1.5} />
           <div className="min-w-0">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-bold">
-              TAKE-HOME REPORT
+            <div className="text-xs font-mono text-[#7a8296]">
+              Take-home student report
             </div>
-            <div className="flex items-center gap-1.5 mt-0.5">
+            <div className="flex items-center gap-2 mt-1">
               <label htmlFor="debrief-commander-name" className="sr-only">
                 Student or Commander Name for Report
               </label>
@@ -225,132 +261,138 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
                 type="text"
                 value={commanderName}
                 onChange={(e) => setCommanderName(e.target.value)}
-                placeholder="Commander Name"
+                placeholder="Commander name"
                 maxLength={32}
                 data-testid="debrief-commander-input"
-                className="px-2 py-1 rounded-md bg-slate-900 border border-slate-700 text-xs text-white w-40 focus:outline-none focus:border-cyan-400"
+                className="h-8 px-2.5 rounded-lg bg-[#1a1e28] border border-[#eef0f5]/10 text-xs text-[#eef0f5] w-44 focus:outline-none focus:border-[#38bdf8]/60"
               />
               {exportFeedback && (
                 <span
                   data-testid="report-export-feedback"
-                  className="text-[10px] font-mono text-emerald-300 truncate"
+                  className="text-xs font-mono text-[#4cc38a] inline-flex items-center gap-1 truncate"
                 >
-                  ✓ {exportFeedback}
+                  <Check className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+                  <span>{exportFeedback}</span>
                 </span>
               )}
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 flex-wrap shrink-0">
+        <div className="flex items-center gap-2 flex-wrap shrink-0">
           <button
             type="button"
             onClick={handleDownloadPdf}
             data-testid="download-pdf-report-btn"
-            className="px-2.5 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-[11px] font-mono font-bold cursor-pointer transition-colors"
+            className="h-8 px-3 rounded-lg bg-[#eef0f5] hover:bg-white text-[#07080d] text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
           >
-            📄 Download PDF
+            <FileText className="w-3.5 h-3.5" strokeWidth={1.5} />
+            <span>Download PDF</span>
           </button>
           <button
             type="button"
             onClick={handleDownloadTxt}
             data-testid="download-txt-report-btn"
-            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 text-[11px] font-mono font-semibold cursor-pointer transition-colors"
+            className="h-8 px-3 rounded-lg bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#eef0f5]/10 text-[#eef0f5] text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
           >
-            📝 Download .TXT
+            <ScrollText className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+            <span>Download .TXT</span>
           </button>
           <button
             type="button"
             onClick={handlePrintReport}
             data-testid="print-report-btn"
-            className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-200 text-[11px] font-mono font-semibold cursor-pointer transition-colors"
+            className="h-8 px-3 rounded-lg bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#eef0f5]/10 text-[#a3a9b8] hover:text-[#eef0f5] text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer transition-colors duration-150"
           >
-            🖨️ Print
+            <Printer className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+            <span>Print</span>
           </button>
         </div>
       </div>
 
-      {/* Hidden Printable Classroom Sheet (shown only during window.print()) */}
+      {/* Hidden Printable Classroom Sheet */}
       <div className="hidden print-report-sheet" aria-hidden="true">
         <div className="border-b-2 border-slate-900 pb-2 mb-3">
-          <div className="text-xs font-mono uppercase tracking-wider text-slate-600">
-            SOL BASE: MOON &amp; MARS OUTPOST TRAINER · STUDENT REPORT
+          <div className="text-xs font-mono text-slate-600">
+            SOL BASE: Moon &amp; Mars Outpost Trainer · Student Report
           </div>
-          <h1 className="text-xl font-bold text-slate-900">
+          <h1 className="text-xl font-semibold text-slate-900">
             {commanderName || 'Junior Astronaut'} — {SCENARIOS[state.scenario]?.title || state.scenario}
           </h1>
           <div className="text-xs font-mono text-slate-700">
             Site: {state.planet === 'moon' ? 'Shackleton Crater, Moon' : 'Jezero Crater, Mars'} · Sol{' '}
-            {state.environment.solNumber}/{state.targetSols} · Difficulty: {state.difficulty.toUpperCase()}
+            {state.environment.solNumber}/{state.targetSols} · Difficulty: {state.difficulty}
           </div>
         </div>
         <pre className="whitespace-pre-wrap font-mono text-[11px] leading-relaxed text-slate-900">
           {printableReportText}
         </pre>
       </div>
+
       {/* Resource Cost Ledger Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-slate-950/90 border border-slate-800 rounded-xl p-2.5 text-center font-mono tabular-nums">
-        <div className="bg-slate-900/70 rounded-lg p-1.5 border border-slate-800/80">
-          <div className="text-[9px] text-slate-400 uppercase">DECISIONS</div>
-          <div className="text-sm font-bold text-white">{debrief.ledger.totalDecisions}</div>
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-xl p-2.5 text-center font-mono tabular-nums">
+        <div className="bg-[#11141c] rounded-lg p-2 border border-[#eef0f5]/[0.08]">
+          <div className="text-xs text-[#7a8296]">Decisions</div>
+          <div className="text-sm font-medium text-[#eef0f5] mt-0.5">{debrief.ledger.totalDecisions}</div>
         </div>
-        <div className="bg-slate-900/70 rounded-lg p-1.5 border border-slate-800/80">
-          <div className="text-[9px] text-slate-400 uppercase">METAL TRADED</div>
-          <div className="text-sm font-bold text-cyan-300">{debrief.ledger.metalSpentKg} kg</div>
+        <div className="bg-[#11141c] rounded-lg p-2 border border-[#eef0f5]/[0.08]">
+          <div className="text-xs text-[#7a8296]">Metal traded</div>
+          <div className="text-sm font-medium text-[#38bdf8] mt-0.5">{debrief.ledger.metalSpentKg} kg</div>
         </div>
-        <div className="bg-slate-900/70 rounded-lg p-1.5 border border-slate-800/80">
-          <div className="text-[9px] text-slate-400 uppercase">REGOLITH USED</div>
-          <div className="text-sm font-bold text-amber-300">{debrief.ledger.regolithSpentKg} kg</div>
+        <div className="bg-[#11141c] rounded-lg p-2 border border-[#eef0f5]/[0.08]">
+          <div className="text-xs text-[#7a8296]">Regolith used</div>
+          <div className="text-sm font-medium text-[#e5a93b] mt-0.5">{debrief.ledger.regolithSpentKg} kg</div>
         </div>
-        <div className="bg-slate-900/70 rounded-lg p-1.5 border border-slate-800/80">
-          <div className="text-[9px] text-slate-400 uppercase">BATTERY / O₂ SPENT</div>
-          <div className="text-xs font-bold text-emerald-300 mt-0.5">
+        <div className="bg-[#11141c] rounded-lg p-2 border border-[#eef0f5]/[0.08]">
+          <div className="text-xs text-[#7a8296]">Battery / O₂</div>
+          <div className="text-xs font-medium text-[#4cc38a] mt-1">
             {debrief.ledger.batterySpentKwh} kWh · {debrief.ledger.oxygenSpentKg} kg O₂
           </div>
         </div>
-        <div className="bg-slate-900/70 rounded-lg p-1.5 border border-slate-800/80 col-span-2 sm:col-span-1">
-          <div className="text-[9px] text-slate-400 uppercase">CRISES HANDLED</div>
-          <div className="text-sm font-bold text-rose-300">
+        <div className="bg-[#11141c] rounded-lg p-2 border border-[#eef0f5]/[0.08] col-span-2 sm:col-span-1">
+          <div className="text-xs text-[#7a8296]">Crises handled</div>
+          <div className="text-sm font-medium text-[#e5484d] mt-0.5">
             {debrief.ledger.crisesResolved} / {debrief.ledger.crisesTotal}
           </div>
         </div>
       </div>
 
       {/* Sub-Navigation Tabs */}
-      <div className="flex items-center gap-1.5 flex-wrap border-b border-slate-800 pb-2">
+      <div className="flex items-center gap-2 flex-wrap border-b border-[#eef0f5]/[0.08] pb-2.5">
         {(
           [
-            ['timeline', `📜 Decision Timeline (${debrief.decisions.length})`],
-            ['crises', `🛰️ Crises → NASA Data (${debrief.crisisLinks.length})`],
-            ['lessons', `🏅 STEM Lessons & Badges (${earnedBadges.length}/${LEARNING_BADGES.length})`],
-          ] as const
-        ).map(([id, label]) => (
+            { id: 'timeline' as const, label: `Decision timeline (${debrief.decisions.length})`, Icon: ScrollText },
+            { id: 'crises' as const, label: `Crises & NASA data (${debrief.crisisLinks.length})`, Icon: Satellite },
+            { id: 'lessons' as const, label: `STEM lessons & badges (${earnedBadges.length}/${LEARNING_BADGES.length})`, Icon: Award },
+          ]
+        ).map(({ id, label, Icon }) => (
           <button
             key={id}
             type="button"
             onClick={() => setActiveTab(id)}
             data-testid={`debrief-tab-${id}`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-colors cursor-pointer ${
+            className={`h-8 px-3 rounded-lg text-xs font-sans font-medium inline-flex items-center gap-2 transition-colors duration-150 cursor-pointer tabular-nums ${
               activeTab === id
-                ? 'bg-cyan-500 text-slate-950 font-bold'
-                : 'bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-600'
+                ? 'bg-[#1a1e28] border border-[#38bdf8]/60 text-[#eef0f5]'
+                : 'bg-[#0b0d14] border border-[#eef0f5]/[0.08] text-[#a3a9b8] hover:text-[#eef0f5]'
             }`}
           >
-            {label}
+            <Icon className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+            <span>{label}</span>
           </button>
         ))}
       </div>
 
       {/* TAB 1: DECISION TIMELINE + COSTS + NASA DATA */}
       {activeTab === 'timeline' && (
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           <div className="flex items-center justify-between gap-2 flex-wrap">
             <div className="flex items-center gap-1.5 flex-wrap">
               {(
                 [
-                  ['all', 'All Decisions'],
+                  ['all', 'All decisions'],
                   ['crisis', 'Crises'],
-                  ['build_shield', 'Builds & Shields'],
+                  ['build_shield', 'Builds & shields'],
                   ['ops', 'Rovers & R&D'],
                 ] as const
               ).map(([fid, flabel]) => (
@@ -358,10 +400,10 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
                   key={fid}
                   type="button"
                   onClick={() => setFilter(fid)}
-                  className={`px-2 py-1 rounded-md text-[11px] font-mono cursor-pointer border ${
+                  className={`h-7 px-2.5 rounded-md text-xs font-sans cursor-pointer border transition-colors duration-150 ${
                     filter === fid
-                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 font-bold'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#1a1e28] border-[#38bdf8]/60 text-[#eef0f5] font-medium'
+                      : 'bg-[#0b0d14] border-[#eef0f5]/[0.08] text-[#7a8296] hover:text-[#eef0f5]'
                   }`}
                 >
                   {flabel}
@@ -374,26 +416,26 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
               onClick={() =>
                 setSortOrder((prev) => (prev === 'chronological' ? 'newest' : 'chronological'))
               }
-              className="px-2 py-1 rounded-md text-[11px] font-mono bg-slate-950 border border-slate-800 text-slate-300 hover:border-slate-600 cursor-pointer"
+              className="h-7 px-2.5 rounded-md text-xs font-mono bg-[#0b0d14] border border-[#eef0f5]/[0.08] text-[#a3a9b8] hover:text-[#eef0f5] cursor-pointer"
             >
-              {sortOrder === 'chronological' ? 'Order: Sol 1 → Now' : 'Order: Newest First'}
+              {sortOrder === 'chronological' ? 'Order: Sol 1 to now' : 'Order: Newest first'}
             </button>
           </div>
 
           {orderedDecisions.length === 0 ? (
-            <div className="bg-slate-950/85 border border-slate-800 rounded-xl p-4 text-center space-y-2">
-              <div className="text-xs font-mono text-cyan-300 font-bold">
-                NO DECISIONS RECORDED IN THIS VIEW YET
+            <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-xl p-4 text-center space-y-2">
+              <div className="text-xs font-mono text-[#38bdf8]">
+                No decisions recorded in this view yet
               </div>
-              <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
-                Every time you inspect a Cost Card to place a module, launch a Rover trip, sinter regolith shielding, solve a crisis, or unlock R&amp;D, it is logged here with its exact cost and real NASA inspiration!
+              <p className="text-xs text-[#a3a9b8] max-w-md mx-auto leading-relaxed">
+                Every time you inspect a Cost Card to place a module, launch a Rover trip, sinter regolith shielding, solve a crisis, or unlock R&amp;D, it is logged here with its exact cost and NASA reference.
               </p>
             </div>
           ) : (
             <div className="relative pl-5 space-y-3">
               <div
                 aria-hidden="true"
-                className="absolute left-[7px] top-2 bottom-2 w-0.5 bg-slate-800"
+                className="absolute left-[7px] top-2 bottom-2 w-px bg-[#eef0f5]/10"
               />
               {orderedDecisions.map((item, idx) => {
                 const cat = item.category || 'build';
@@ -404,11 +446,11 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
                   <div
                     key={item.id}
                     data-testid="debrief-timeline-entry"
-                    className="relative bg-slate-950/90 border border-slate-800 rounded-xl p-3 space-y-2"
+                    className="relative bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-xl p-3 space-y-2"
                   >
                     <span
                       aria-hidden="true"
-                      className={`absolute -left-[18px] top-4 w-2.5 h-2.5 rounded-sm border border-slate-950 ${meta.dotClass}`}
+                      className={`absolute -left-[18px] top-4 w-2 h-2 rounded-full ${meta.dotClass}`}
                     />
 
                     <div className="flex items-start justify-between gap-2 flex-wrap">
@@ -416,27 +458,27 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
                         <div className="flex items-center gap-2 flex-wrap">
                           <span
                             data-testid="debrief-step-badge"
-                            className="text-[10px] font-mono font-bold text-slate-950 bg-cyan-400 px-1.5 py-0.5 rounded tabular-nums"
+                            className="text-xs font-mono font-medium text-[#07080d] bg-[#eef0f5] px-2 py-0.5 rounded-md tabular-nums"
                           >
-                            STEP {stepNum}
+                            Step {stepNum}
                           </span>
-                          <span className="text-[10px] font-mono font-bold text-cyan-300 bg-slate-900 border border-slate-700 px-1.5 py-0.5 rounded">
+                          <span className="text-xs font-mono text-[#38bdf8] bg-[#1a1e28] border border-[#eef0f5]/[0.08] px-2 py-0.5 rounded-md">
                             {item.solTimeLabel || `Sol ${item.sol}`}
                           </span>
                           <span
-                            className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border ${meta.badgeClass}`}
+                            className={`text-xs font-mono px-2 py-0.5 rounded-md border ${meta.badgeClass}`}
                           >
                             {meta.label}
                           </span>
                         </div>
-                        <h4 className="text-sm font-bold text-white mt-1">{item.action}</h4>
+                        <h4 className="text-sm font-medium text-[#eef0f5] mt-1.5">{item.action}</h4>
                       </div>
 
                       <div className="text-right">
-                        <span className="text-[9px] font-mono uppercase text-amber-400 block">
-                          COST PAID
+                        <span className="text-xs font-mono text-[#7a8296] block">
+                          Cost paid
                         </span>
-                        <span className="text-xs font-mono font-bold text-amber-200 tabular-nums">
+                        <span className="text-xs font-mono text-[#e5a93b] tabular-nums">
                           {item.costSummary}
                         </span>
                       </div>
@@ -447,7 +489,7 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
                         {item.costBreakdown.map((chip, cIdx) => (
                           <span
                             key={`${item.id}_c_${cIdx}`}
-                            className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950/40 border border-amber-500/35 text-amber-200 tabular-nums"
+                            className="text-xs font-mono px-2 py-0.5 rounded-md bg-[#1a1e28] border border-[#eef0f5]/[0.08] text-[#e5a93b] tabular-nums"
                           >
                             {chip}
                           </span>
@@ -455,19 +497,19 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
                       </div>
                     )}
 
-                    <div className="text-xs text-slate-200 leading-snug">
-                      <strong className="text-emerald-300 font-mono text-[10px] uppercase mr-1">
+                    <div className="text-xs text-[#eef0f5] leading-snug">
+                      <span className="text-[#4cc38a] font-mono mr-1.5">
                         Outcome:
-                      </strong>
-                      {item.outcomeNote}
+                      </span>
+                      <span>{item.outcomeNote}</span>
                     </div>
 
                     {item.tradeOffRisk && (
-                      <div className="text-[11px] text-slate-300 leading-snug">
-                        <strong className="text-rose-300 font-mono text-[10px] uppercase mr-1">
-                          Trade-Off:
-                        </strong>
-                        {item.tradeOffRisk}
+                      <div className="text-xs text-[#a3a9b8] leading-snug">
+                        <span className="text-[#e5484d] font-mono mr-1.5">
+                          Trade-off:
+                        </span>
+                        <span>{item.tradeOffRisk}</span>
                       </div>
                     )}
 
@@ -483,40 +525,48 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
       {/* TAB 2: CRISIS -> REAL NASA DATA MAPPING */}
       {activeTab === 'crises' && (
         <div className="space-y-3" data-testid="debrief-crises-view">
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-[#a3a9b8] leading-relaxed">
             Every emergency crisis in SOL BASE is modeled after real spaceflight hazards tracked by NASA’s{' '}
-            <strong className="text-cyan-300">DONKI Space Weather</strong>,{' '}
-            <strong className="text-cyan-300">OSDR Astronaut Health</strong>, and{' '}
-            <strong className="text-cyan-300">Mars/ISS Mission Operations</strong>:
+            <span className="text-[#38bdf8] font-medium">DONKI Space Weather</span>,{' '}
+            <span className="text-[#38bdf8] font-medium">OSDR Astronaut Health</span>, and{' '}
+            <span className="text-[#38bdf8] font-medium">Mars/ISS Mission Operations</span>.
           </p>
 
           {debrief.crisisLinks.map(({ crisis, status, nasaRef }) => (
             <div
               key={crisis.id}
               data-testid="debrief-crisis-card"
-              className="bg-slate-950/90 border border-slate-800 rounded-xl p-3.5 space-y-2"
+              className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-xl p-4 space-y-2.5"
             >
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold text-amber-300">
-                    SOL {crisis.triggerSol}
+                  <span className="text-xs font-mono text-[#e5a93b] tabular-nums">
+                    Sol {crisis.triggerSol}
                   </span>
-                  <h4 className="text-sm font-bold text-white">{crisis.title}</h4>
+                  <h4 className="text-sm font-medium text-[#eef0f5]">{crisis.title}</h4>
                 </div>
                 <span
-                  className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded border ${
+                  className={`text-xs font-mono px-2 py-0.5 rounded-md border inline-flex items-center gap-1.5 ${
                     status === 'solved'
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                      ? 'bg-[#4cc38a]/15 text-[#4cc38a] border-[#4cc38a]/35'
                       : status === 'active'
-                      ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                      : 'bg-slate-900 text-slate-300 border-slate-700'
+                      ? 'bg-[#e5484d]/15 text-[#e5484d] border-[#e5484d]/35'
+                      : 'bg-[#1a1e28] text-[#a3a9b8] border-[#eef0f5]/[0.08]'
                   }`}
                 >
-                  {status === 'solved'
-                    ? '✓ RESOLVED IN MISSION'
-                    : status === 'active'
-                    ? '⚠ ACTIVE NOW'
-                    : 'UPCOMING FORECAST'}
+                  {status === 'solved' ? (
+                    <>
+                      <Check className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      <span>Resolved in mission</span>
+                    </>
+                  ) : status === 'active' ? (
+                    <>
+                      <AlertTriangle className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      <span>Active now</span>
+                    </>
+                  ) : (
+                    <span>Upcoming forecast</span>
+                  )}
                 </span>
               </div>
 
@@ -529,63 +579,63 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
       {/* TAB 3: EDUCATIONAL REFLECTIONS, PLANNER ANSWER & LEARNING BADGES */}
       {activeTab === 'lessons' && (
         <div className="space-y-3" data-testid="debrief-lessons-view">
-          {/* Mission Trade-Off Insights */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             {debrief.insights.map((ins) => (
               <div
                 key={ins.id}
-                className={`rounded-xl border p-3 space-y-1 ${
+                className={`rounded-xl border p-3 space-y-1 bg-[#0b0d14] ${
                   ins.status === 'strong'
-                    ? 'bg-emerald-950/30 border-emerald-500/40'
+                    ? 'border-[#4cc38a]/35'
                     : ins.status === 'caution'
-                    ? 'bg-amber-950/30 border-amber-500/40'
-                    : 'bg-cyan-950/30 border-cyan-500/40'
+                    ? 'border-[#e5a93b]/35'
+                    : 'border-[#eef0f5]/[0.08]'
                 }`}
               >
-                <div className="text-xs font-bold text-white">{ins.title}</div>
-                <p className="text-[11px] text-slate-200 leading-snug">{ins.message}</p>
+                <div className="text-xs font-medium text-[#eef0f5]">{ins.title}</div>
+                <p className="text-xs text-[#a3a9b8] leading-snug">{ins.message}</p>
               </div>
             ))}
           </div>
 
-          {/* What Would a Real Mission Planner Do? */}
-          <div className="bg-cyan-950/35 border border-cyan-500/35 rounded-xl p-3 space-y-1.5">
+          <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-xl p-3 space-y-2">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-bold">
-                🧭 WHAT WOULD A REAL NASA MISSION PLANNER DO?
+              <span className="text-xs font-mono text-[#38bdf8] inline-flex items-center gap-1.5">
+                <Compass className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+                <span>Real NASA mission planner strategy</span>
               </span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-amber-300 border border-slate-700">
+              <span className="text-xs font-mono px-2 py-0.5 rounded-md bg-[#1a1e28] text-[#e5a93b] border border-[#eef0f5]/[0.08]">
                 {state.environment.solarFlareTelemetry.sourceBadge} ·{' '}
                 {state.environment.solarFlareTelemetry.flareClass}
               </span>
             </div>
-            <p className="text-xs text-emerald-200 leading-relaxed">{realPlannerAnswer}</p>
-            <p className="text-xs text-amber-200 leading-relaxed pt-1 border-t border-cyan-500/20">
-              <strong>Try this next time:</strong> {tryNextTip}
+            <p className="text-xs text-[#4cc38a] leading-relaxed">{realPlannerAnswer}</p>
+            <p className="text-xs text-[#e5a93b] leading-relaxed pt-2 border-t border-[#eef0f5]/[0.08]">
+              <span className="font-medium">Try next time:</span> {tryNextTip}
             </p>
           </div>
 
-          {/* Learning Badges Earned */}
-          <div className="bg-slate-950/85 border border-slate-800 rounded-xl p-3 space-y-2">
-            <div className="text-[10px] font-mono uppercase tracking-wider text-amber-300 font-bold">
-              🏅 JUNIOR ASTRONAUT ACADEMY BADGES ({earnedBadges.length}/{LEARNING_BADGES.length})
+          <div className="bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-xl p-3 space-y-2.5">
+            <div className="text-xs font-mono text-[#a3a9b8] inline-flex items-center gap-1.5 tabular-nums">
+              <Award className="w-4 h-4 text-[#e5a93b]" strokeWidth={1.5} />
+              <span>Junior astronaut badges ({earnedBadges.length}/{LEARNING_BADGES.length})</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {LEARNING_BADGES.map((b) => {
                 const unlocked = state.unlockedBadges.includes(b.id);
                 return (
                   <div
                     key={b.id}
-                    className={`p-2 rounded-lg border text-left ${
+                    className={`p-2.5 rounded-lg border text-left ${
                       unlocked
-                        ? 'bg-emerald-950/40 border-emerald-500/40 text-white'
-                        : 'bg-slate-900/50 border-slate-800 text-slate-500 opacity-65'
+                        ? 'bg-[#11141c] border-[#4cc38a]/40 text-[#eef0f5]'
+                        : 'bg-[#07080d] border-[#eef0f5]/[0.06] text-[#7a8296] opacity-70'
                     }`}
                   >
-                    <div className="text-xs font-bold">
-                      {b.icon} {b.title}
+                    <div className="flex items-center gap-2 text-xs font-medium">
+                      {renderBadgeIcon(b.id)}
+                      <span>{b.title}</span>
                     </div>
-                    <div className="text-[10px] leading-tight mt-0.5">{b.description}</div>
+                    <div className="text-xs leading-tight mt-1 text-[#a3a9b8]">{b.description}</div>
                   </div>
                 );
               })}
@@ -602,19 +652,19 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 pointer-events-auto bg-slate-950/85 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 pointer-events-auto bg-[#07080d]/85 flex items-center justify-center p-4"
       role="dialog"
       aria-label="Mission Debrief and Decision Timeline"
       data-testid="mission-debrief-modal"
     >
-      <div className="bg-slate-900 border border-cyan-500/55 rounded-2xl max-w-3xl w-full max-h-[88vh] flex flex-col shadow-2xl">
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between gap-3">
+      <div className="bg-[#11141c] border border-[#eef0f5]/10 rounded-2xl max-w-3xl w-full max-h-[88vh] flex flex-col">
+        <div className="p-4 border-b border-[#eef0f5]/[0.08] flex items-center justify-between gap-3">
           <div>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 font-bold block">
-              SOL {state.environment.solNumber}/{state.targetSols} · FLIGHT REVIEW &amp; NASA DATA LINKS
+            <span className="text-xs font-mono text-[#7a8296] block tabular-nums">
+              Sol {state.environment.solNumber}/{state.targetSols} · Flight review &amp; NASA data links
             </span>
-            <h3 className="text-lg font-bold text-white font-display">
-              Mission Debrief: Decisions, Costs &amp; Real NASA Science
+            <h3 className="text-lg font-medium text-[#eef0f5] font-display mt-0.5">
+              Mission debrief: Decisions, costs &amp; NASA science
             </h3>
           </div>
           {onClose && (
@@ -622,9 +672,10 @@ export const MissionDebrief: React.FC<MissionDebriefProps> = ({
               type="button"
               onClick={onClose}
               aria-label="Close Mission Debrief"
-              className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-mono cursor-pointer"
+              className="h-8 px-3 rounded-lg bg-[#1a1e28] hover:bg-[#1a1e28]/80 border border-[#eef0f5]/10 text-[#a3a9b8] hover:text-[#eef0f5] text-xs font-sans inline-flex items-center gap-1.5 cursor-pointer"
             >
-              Close ✕
+              <span>Close</span>
+              <X className="w-3.5 h-3.5" strokeWidth={1.5} />
             </button>
           )}
         </div>

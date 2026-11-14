@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { AlertTriangle, Check, ChevronDown, ChevronUp, Shield, X } from 'lucide-react';
 import { SolarFlareTelemetry } from '../types/game';
 import { isHighSolarFlareRisk } from '../game/spaceWeatherData';
 
@@ -35,52 +36,23 @@ export const SolarFlareHazardOverlay: React.FC<SolarFlareHazardOverlayProps> = (
       data-risk-level={telemetry.riskLevel}
       className="fixed inset-0 z-20 pointer-events-none select-none"
     >
-      {/* 1. Subtle Peripheral Hazard Vignette */}
+      {/* Subtle Peripheral Hazard Edge */}
       <div
         aria-hidden="true"
         className="absolute inset-0 animate-solar-hazard"
         style={{
           background: isCritical
-            ? 'radial-gradient(ellipse at center, transparent 62%, rgba(244, 63, 94, 0.22) 100%)'
-            : 'radial-gradient(ellipse at center, transparent 66%, rgba(245, 158, 11, 0.15) 100%)',
+            ? 'radial-gradient(ellipse at center, transparent 68%, rgba(229, 72, 77, 0.16) 100%)'
+            : 'radial-gradient(ellipse at center, transparent 72%, rgba(229, 169, 59, 0.10) 100%)',
         }}
       />
 
-      {/* 2. Subtle Aerospace Corner Reticles */}
+      {/* Interactive Hazard Indicator & DONKI Telemetry Popover */}
       <div
-        aria-hidden="true"
-        className={`absolute inset-2.5 border rounded-2xl transition-colors duration-500 ${
-          isCritical ? 'border-rose-500/30' : 'border-amber-500/20'
-        }`}
-      >
-        <span
-          className={`absolute -top-px -left-px w-5 h-5 border-t-2 border-l-2 rounded-tl-xl ${
-            isCritical ? 'border-rose-400/75' : 'border-amber-400/65'
-          }`}
-        />
-        <span
-          className={`absolute -top-px -right-px w-5 h-5 border-t-2 border-r-2 rounded-tr-xl ${
-            isCritical ? 'border-rose-400/75' : 'border-amber-400/65'
-          }`}
-        />
-        <span
-          className={`absolute -bottom-px -left-px w-5 h-5 border-b-2 border-l-2 rounded-bl-xl ${
-            isCritical ? 'border-rose-400/75' : 'border-amber-400/65'
-          }`}
-        />
-        <span
-          className={`absolute -bottom-px -right-px w-5 h-5 border-b-2 border-r-2 rounded-br-xl ${
-            isCritical ? 'border-rose-400/75' : 'border-amber-400/65'
-          }`}
-        />
-      </div>
-
-      {/* 3. Subtle Interactive Hazard Indicator & Expandable DONKI Telemetry Panel */}
-      <div
-        className={`pointer-events-auto fixed flex flex-col gap-2 transition-all duration-300 ${
+        className={`pointer-events-auto fixed flex flex-col gap-2 transition-[top,right,left] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           shiftLeftForTutorial
-            ? 'top-[7.5rem] left-3 sm:left-5 items-start'
-            : 'top-[5.25rem] right-3 sm:right-5 items-end'
+            ? 'top-28 left-4 items-start'
+            : 'top-24 right-4 items-end'
         }`}
       >
         <button
@@ -89,116 +61,99 @@ export const SolarFlareHazardOverlay: React.FC<SolarFlareHazardOverlayProps> = (
           aria-expanded={isDetailsOpen}
           aria-label={`Solar flare hazard warning: ${telemetry.riskLevel.toUpperCase()} ${telemetry.flareClass} from ${telemetry.activeRegion}`}
           data-testid="solar-flare-hazard-badge"
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border shadow-lg text-xs font-mono cursor-pointer transition-colors ${
+          className={`h-8 flex items-center gap-2 px-3 rounded-lg border text-xs font-mono cursor-pointer transition-colors duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] bg-[#11141c]/95 ${
             isCritical
-              ? 'bg-rose-950/92 border-rose-500/75 text-rose-100 hover:bg-rose-900/95'
-              : 'bg-amber-950/90 border-amber-500/65 text-amber-100 hover:bg-amber-900/95'
+              ? 'border-[#e5484d]/60 text-[#eef0f5] hover:bg-[#1a1e28]'
+              : 'border-[#e5a93b]/50 text-[#eef0f5] hover:bg-[#1a1e28]'
           }`}
         >
-          {/* Solar Flare Hazard SVG */}
-          <svg
-            className={`w-4 h-4 shrink-0 ${isCritical ? 'text-rose-400' : 'text-amber-400'}`}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-            />
-          </svg>
-
-          <span className="font-bold tracking-wider uppercase">
-            {isCritical ? 'SPE STORM: CRITICAL' : 'FLARE RISK: HIGH'}
+          <AlertTriangle
+            className={`w-4 h-4 shrink-0 ${isCritical ? 'text-[#e5484d]' : 'text-[#e5a93b]'}`}
+            strokeWidth={1.5}
+          />
+          <span className="font-medium">
+            {isCritical ? 'SPE storm: Critical' : 'Flare risk: High'}
           </span>
-
-          <span className="text-[11px] opacity-85 tabular-nums">
+          <span className="text-[#a3a9b8] tabular-nums">
             {telemetry.flareClass} · {telemetry.activeRegion}
           </span>
-
           <span
-            className={`px-1.5 py-0.5 rounded text-[10px] font-bold tabular-nums ${
-              isCritical ? 'bg-rose-500/25 text-rose-200' : 'bg-amber-500/25 text-amber-200'
+            className={`px-1.5 py-0.5 rounded-md text-xs tabular-nums ${
+              isCritical ? 'bg-[#e5484d]/15 text-[#e5484d]' : 'bg-[#e5a93b]/15 text-[#e5a93b]'
             }`}
           >
             {telemetry.protonFluxPfu} pfu
           </span>
-
-          <span className="text-[10px] opacity-75">{isDetailsOpen ? '▴' : '▾'}</span>
+          {isDetailsOpen ? (
+            <ChevronUp className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+          ) : (
+            <ChevronDown className="w-3.5 h-3.5 text-[#7a8296]" strokeWidth={1.5} />
+          )}
         </button>
 
         {isDetailsOpen && (
           <div
             role="region"
             aria-label="NASA DONKI Solar Flare Telemetry"
-            className={`w-80 rounded-xl border p-3 shadow-2xl space-y-2.5 text-xs ${
-              isCritical
-                ? 'bg-slate-950/95 border-rose-500/70 text-rose-100'
-                : 'bg-slate-950/95 border-amber-500/60 text-amber-50'
-            }`}
+            className="w-80 bg-[#11141c]/95 border border-[#eef0f5]/10 rounded-xl p-4 space-y-3 text-xs"
           >
             <div className="flex items-start justify-between gap-2">
               <div>
                 <span
-                  className={`text-[10px] font-mono uppercase tracking-wider font-bold block ${
-                    isCritical ? 'text-rose-400' : 'text-amber-400'
+                  className={`text-xs font-mono font-medium block ${
+                    isCritical ? 'text-[#e5484d]' : 'text-[#e5a93b]'
                   }`}
                 >
-                  NASA DONKI Space Weather Alert
+                  NASA DONKI space weather telemetry
                 </span>
-                <div className="text-[11px] font-mono text-slate-400 mt-0.5">
-                  ID: {telemetry.donkiEventId}
+                <div className="text-xs font-mono text-[#7a8296] mt-0.5 tabular-nums">
+                  Event {telemetry.donkiEventId}
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setIsDetailsOpen(false)}
                 aria-label="Close solar flare telemetry details"
-                className="text-slate-400 hover:text-white px-1 text-xs cursor-pointer"
+                className="text-[#7a8296] hover:text-[#eef0f5] p-1 rounded-md hover:bg-[#1a1e28] cursor-pointer"
               >
-                ✕
+                <X className="w-4 h-4" strokeWidth={1.5} />
               </button>
             </div>
 
-            {/* Risk Index Progress Bar */}
             <div>
-              <div className="flex items-center justify-between text-[11px] font-mono mb-1">
-                <span className="text-slate-400">Flare Risk Index</span>
-                <span className={`font-bold tabular-nums ${isCritical ? 'text-rose-400' : 'text-amber-300'}`}>
-                  {telemetry.riskScorePct}% ({telemetry.riskLevel.toUpperCase()})
+              <div className="flex items-center justify-between text-xs font-mono mb-1">
+                <span className="text-[#a3a9b8]">Flare risk index</span>
+                <span className={`font-medium tabular-nums ${isCritical ? 'text-[#e5484d]' : 'text-[#e5a93b]'}`}>
+                  {telemetry.riskScorePct}% ({telemetry.riskLevel})
                 </span>
               </div>
-              <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+              <div className="w-full h-1.5 bg-[#1a1e28] rounded-full overflow-hidden">
                 <div
-                  className={`h-full transition-all ${isCritical ? 'bg-rose-500' : 'bg-amber-400'}`}
+                  className={`h-full transition-[width] duration-300 ${isCritical ? 'bg-[#e5484d]' : 'bg-[#e5a93b]'}`}
                   style={{ width: `${telemetry.riskScorePct}%` }}
                 />
               </div>
             </div>
 
-            {/* Key Telemetry Grid */}
-            <div className="grid grid-cols-2 gap-1.5 text-[11px] font-mono bg-slate-900/90 border border-slate-800 rounded-lg p-2 tabular-nums">
+            <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-lg p-3 tabular-nums">
               <div>
-                <span className="text-slate-400 block text-[10px]">GOES Class</span>
-                <span className="text-white font-bold">{telemetry.flareClass}</span>
+                <span className="text-[#7a8296] block text-xs">GOES class</span>
+                <span className="text-[#eef0f5] font-medium">{telemetry.flareClass}</span>
               </div>
               <div>
-                <span className="text-slate-400 block text-[10px]">Sunspot Region</span>
-                <span className="text-white font-bold">{telemetry.activeRegion}</span>
+                <span className="text-[#7a8296] block text-xs">Sunspot region</span>
+                <span className="text-[#eef0f5] font-medium">{telemetry.activeRegion}</span>
               </div>
               <div>
-                <span className="text-slate-400 block text-[10px]">Proton Flux</span>
-                <span className="text-amber-300 font-bold">{telemetry.protonFluxPfu} pfu</span>
+                <span className="text-[#7a8296] block text-xs">Proton flux</span>
+                <span className="text-[#e5a93b] font-medium">{telemetry.protonFluxPfu} pfu</span>
               </div>
               <div>
-                <span className="text-slate-400 block text-[10px]">CME Speed / ETA</span>
-                <span className="text-cyan-300 font-bold">
+                <span className="text-[#7a8296] block text-xs">CME / ETA</span>
+                <span className="text-[#38bdf8] font-medium">
                   {telemetry.cmeSpeedKmS} km/s ·{' '}
                   {telemetry.etaHours === 0
-                    ? 'NOW'
+                    ? 'Now'
                     : telemetry.etaHours !== null
                     ? `${telemetry.etaHours}h`
                     : '—'}
@@ -206,25 +161,30 @@ export const SolarFlareHazardOverlay: React.FC<SolarFlareHazardOverlayProps> = (
               </div>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed font-sans">
+            <p className="text-xs text-[#a3a9b8] leading-relaxed font-sans">
               {telemetry.advisory}
             </p>
 
-            {/* Quick Protection Action */}
             <button
               type="button"
               onClick={() => onOrderBunker(!crewInShelter)}
-              className={`w-full py-1.5 px-3 rounded-lg font-mono font-bold text-xs transition-colors cursor-pointer ${
+              className={`w-full h-9 px-3 rounded-lg font-sans font-medium text-xs transition-colors duration-150 inline-flex items-center justify-center gap-2 cursor-pointer ${
                 crewInShelter
-                  ? 'bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 hover:bg-emerald-500/30'
-                  : isCritical
-                  ? 'bg-rose-500 hover:bg-rose-400 text-slate-950'
-                  : 'bg-amber-500 hover:bg-amber-400 text-slate-950'
+                  ? 'bg-[#1a1e28] border border-[#4cc38a]/50 text-[#4cc38a] hover:bg-[#1a1e28]/80'
+                  : 'bg-[#eef0f5] hover:bg-white text-[#07080d]'
               }`}
             >
-              {crewInShelter
-                ? '✓ Crew Sheltered (-96% Rad) · Recall Crew'
-                : '🛡️ Bunker Crew in Storm Shelter (-96% Rad)'}
+              {crewInShelter ? (
+                <>
+                  <Check className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                  <span>Crew sheltered (-96% rad) · Recall crew</span>
+                </>
+              ) : (
+                <>
+                  <Shield className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+                  <span>Bunker crew in shelter (-96% rad)</span>
+                </>
+              )}
             </button>
           </div>
         )}

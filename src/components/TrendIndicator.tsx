@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { ArrowDown, ArrowUp, Minus } from 'lucide-react';
 
 export type TrendDirection = 'up' | 'down' | 'stable';
 
@@ -16,10 +17,6 @@ export interface TrendIndicatorProps {
   size?: 'sm' | 'md';
 }
 
-/**
- * TrendIndicator renders small SVG arrows (up, down, stable) to indicate
- * whether a resource is increasing, decreasing, or balanced on the current tick.
- */
 export const TrendIndicator: React.FC<TrendIndicatorProps> = ({
   trend: explicitTrend,
   rate,
@@ -28,7 +25,6 @@ export const TrendIndicator: React.FC<TrendIndicatorProps> = ({
   className = '',
   size = 'sm',
 }) => {
-  // Determine trend either from explicit prop or calculated from rate
   let direction: TrendDirection = explicitTrend || 'stable';
   if (explicitTrend === undefined && rate !== undefined) {
     if (rate > threshold) {
@@ -40,54 +36,24 @@ export const TrendIndicator: React.FC<TrendIndicatorProps> = ({
     }
   }
 
-  const iconSizeClass = size === 'md' ? 'w-4 h-4' : 'w-3 h-3';
+  const iconSizeClass = size === 'md' ? 'w-4 h-4' : 'w-3.5 h-3.5';
 
   return (
     <span
-      className={`inline-flex items-center gap-0.5 font-mono text-[10px] tabular-nums ${className}`}
+      className={`inline-flex items-center gap-1 font-mono text-xs tabular-nums ${className}`}
       title={label || `Trend: ${direction}${rate !== undefined ? ` (${rate >= 0 ? `+${rate}` : rate})` : ''}`}
       aria-label={`Trend: ${direction}`}
     >
       {direction === 'up' && (
-        <svg
-          className={`${iconSizeClass} text-emerald-400 shrink-0`}
-          viewBox="0 0 16 16"
-          fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Crisp upward arrow */}
-          <path d="M8 2.5l4.5 5.5H9.5V13h-3V8H3.5L8 2.5z" />
-        </svg>
+        <ArrowUp className={`${iconSizeClass} text-[#4cc38a] shrink-0`} strokeWidth={1.5} />
       )}
-
       {direction === 'down' && (
-        <svg
-          className={`${iconSizeClass} text-rose-400 shrink-0`}
-          viewBox="0 0 16 16"
-          fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Crisp downward arrow */}
-          <path d="M8 13.5l-4.5-5.5H6.5V3h3v5h3L8 13.5z" />
-        </svg>
+        <ArrowDown className={`${iconSizeClass} text-[#e5484d] shrink-0`} strokeWidth={1.5} />
       )}
-
       {direction === 'stable' && (
-        <svg
-          className={`${iconSizeClass} text-slate-400 shrink-0`}
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Clean horizontal equilibrium mark */}
-          <path d="M4 8h8" />
-        </svg>
+        <Minus className={`${iconSizeClass} text-[#7a8296] shrink-0`} strokeWidth={1.5} />
       )}
-
-      {label && <span className="text-slate-400 text-[9px]">{label}</span>}
+      {label && <span className="text-[#7a8296] text-xs">{label}</span>}
     </span>
   );
 };

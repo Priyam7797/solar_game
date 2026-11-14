@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { ModuleTypeId } from '../types/game';
 import { MODULE_CATALOG } from '../game/modulesData';
 import {
@@ -114,13 +115,10 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
   const isFirstStep = tutorialState.currentStepIndex === 0;
   const isLastStep = tutorialState.currentStepIndex === TUTORIAL_STEPS.length - 1;
 
-  // Compute safe card position adjacent to highlighted element
   const cardWidth = Math.min(CARD_WIDTH, viewport.w - 32);
   let cardLeft = Math.round((viewport.w - cardWidth) / 2);
   let cardTop = Math.round((viewport.h - cardHeight) / 2);
 
-  // If user is actively placing a module during the module placement step,
-  // tuck the tutorial card into the top-left corner so the 3D outpost grid is unobstructed.
   const isPlacingInTutorial =
     step.id === 'module_placement' && activePlacementType !== null;
 
@@ -128,7 +126,7 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
     cardLeft = 16;
     cardTop = 104;
   } else if (targetRect) {
-    const aboveGap = 28; // Leaves clear room for the Step Focus badge above the spotlight border
+    const aboveGap = 28;
     const belowGap = 16;
     if (step.targetId === 'telemetry-bar') {
       if (viewport.w >= 1024 && targetRect.right + cardWidth + 32 < viewport.w) {
@@ -174,7 +172,6 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
       aria-label="First Mission 60-Second Tutorial"
       className="fixed inset-0 z-30 pointer-events-none"
     >
-      {/* 1. Non-blocking SVG Spotlight Cutout Backdrop */}
       {targetRect && (
         <>
           <svg
@@ -200,12 +197,11 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
               y="0"
               width="100%"
               height="100%"
-              fill="rgba(2, 6, 23, 0.48)"
+              fill="rgba(7, 8, 13, 0.56)"
               mask="url(#tutorial-spotlight-mask)"
             />
           </svg>
 
-          {/* Animated Glowing Spotlight Border around Target HUD Element */}
           <div
             data-testid="tutorial-spotlight-ring"
             style={{
@@ -214,16 +210,15 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
               width: spotlightW,
               height: spotlightH,
             }}
-            className="fixed pointer-events-none rounded-2xl border-2 border-cyan-400 shadow-[0_0_24px_rgba(34,211,238,0.5)] transition-all duration-300"
+            className="fixed pointer-events-none rounded-2xl border border-[#38bdf8]/80 transition-[top,left,width,height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
           >
-            <span className="absolute -top-2.5 left-3 px-2 py-0.5 bg-cyan-400 text-slate-950 font-mono font-bold text-[10px] rounded uppercase tracking-wider shadow">
-              Step {step.stepNumber} Focus
+            <span className="absolute -top-3 left-3 px-2 py-0.5 bg-[#11141c] border border-[#38bdf8]/60 text-[#eef0f5] font-mono text-xs rounded-md">
+              Step {step.stepNumber} focus
             </span>
           </div>
         </>
       )}
 
-      {/* 2. Interactive Commander Guide Card */}
       <div
         ref={cardRef}
         role="dialog"
@@ -233,69 +228,65 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
           left: cardLeft,
           width: cardWidth,
         }}
-        className="fixed pointer-events-auto bg-slate-950/95 border border-cyan-500/70 rounded-xl p-4 shadow-2xl space-y-2.5 transition-all duration-300"
+        className="fixed pointer-events-auto bg-[#11141c]/95 border border-[#eef0f5]/10 rounded-xl p-4 space-y-3 transition-[top,left] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
       >
-        {/* Top Row: Step & 60s Countdown Timer */}
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8] shrink-0" aria-hidden="true" />
+            <span className="text-xs font-mono text-[#7a8296]">
               {step.badge}
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span
               data-testid="tutorial-timer"
-              className="text-[11px] font-mono font-bold text-amber-300 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded tabular-nums"
+              className="text-xs font-mono text-[#eef0f5] bg-[#0b0d14] border border-[#eef0f5]/[0.08] px-2 py-0.5 rounded-md tabular-nums"
             >
-              {isPaused ? 'PAUSED' : `${remainingSec}s / 60s`}
+              {isPaused ? 'Paused' : `${remainingSec}s / 60s`}
             </span>
             <button
+              type="button"
               onClick={onSkip}
               aria-label="Skip mission tutorial"
-              className="text-xs font-mono text-slate-400 hover:text-white px-1.5 py-0.5 rounded hover:bg-slate-800 cursor-pointer"
+              className="text-xs font-sans text-[#a3a9b8] hover:text-[#eef0f5] px-2 py-1 rounded-md hover:bg-[#1a1e28] cursor-pointer transition-colors duration-150"
             >
               Skip
             </button>
           </div>
         </div>
 
-        {/* 60-Second Orientation Progress Bar */}
-        <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+        <div className="w-full bg-[#1a1e28] h-1.5 rounded-full overflow-hidden">
           <div
-            className="h-full bg-cyan-400 transition-all duration-200"
+            className="h-full bg-[#38bdf8] transition-[width] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]"
             style={{ width: `${overallProgressPct}%` }}
           />
         </div>
 
-        {/* Step Title & Explanation */}
         <div>
-          <h3 className="text-sm font-bold text-white font-display">
+          <h3 className="text-base font-medium text-[#eef0f5] font-display">
             {step.stepNumber}. {step.title}
           </h3>
-          <p className="text-xs text-slate-300 leading-relaxed mt-1 font-sans">
+          <p className="text-xs text-[#a3a9b8] leading-relaxed mt-1 font-sans">
             {step.description}
           </p>
         </div>
 
-        {/* Live Action Feedback Box */}
         {step.id === 'module_placement' && tutorialState.modulesPlacedDuringTutorial > 0 ? (
-          <div className="text-xs font-mono text-emerald-300 bg-emerald-950/50 border border-emerald-500/40 rounded-lg px-2.5 py-1.5">
-            ✓ Module deployed! Great job expanding the outpost.
+          <div className="text-xs font-mono text-[#4cc38a] bg-[#0b0d14] border border-[#4cc38a]/40 rounded-lg p-2.5 flex items-center gap-2">
+            <Check className="w-4 h-4 shrink-0" strokeWidth={1.5} />
+            <span>Module deployed and operational</span>
           </div>
         ) : isPlacingInTutorial && activePlacementType ? (
-          <div className="text-xs font-mono text-amber-300 bg-amber-950/50 border border-amber-500/40 rounded-lg px-2.5 py-1.5">
-            Placing {MODULE_CATALOG[activePlacementType]?.name}: Click an open tile on the 3D surface!
+          <div className="text-xs font-mono text-[#e5a93b] bg-[#0b0d14] border border-[#e5a93b]/40 rounded-lg p-2.5">
+            Placing {MODULE_CATALOG[activePlacementType]?.name}: Click an open tile on the 3D surface.
           </div>
         ) : (
-          <div className="text-[11px] font-mono text-cyan-200 bg-cyan-950/40 border border-cyan-500/30 rounded-lg px-2.5 py-1.5">
+          <div className="text-xs font-mono text-[#a3a9b8] bg-[#0b0d14] border border-[#eef0f5]/[0.08] rounded-lg p-2.5">
             Try it: {step.actionPrompt}
           </div>
         )}
 
-        {/* Navigation Footer */}
         <div className="flex items-center justify-between pt-1">
-          {/* Step Dots */}
           <div className="flex items-center gap-1.5">
             {TUTORIAL_STEPS.map((s, idx) => (
               <button
@@ -303,12 +294,12 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
                 type="button"
                 onClick={() => onSelectStep(idx)}
                 aria-label={`Go to tutorial step ${s.stepNumber}: ${s.title}`}
-                className={`h-2 rounded-full transition-all cursor-pointer ${
+                className={`h-2 rounded-full transition-[width,background-color] duration-150 cursor-pointer ${
                   idx === tutorialState.currentStepIndex
-                    ? 'w-5 bg-cyan-400'
+                    ? 'w-5 bg-[#38bdf8]'
                     : idx < tutorialState.currentStepIndex
-                    ? 'w-2 bg-emerald-400 hover:bg-emerald-300'
-                    : 'w-2 bg-slate-700 hover:bg-slate-500'
+                    ? 'w-2 bg-[#4cc38a]'
+                    : 'w-2 bg-[#1a1e28] border border-[#eef0f5]/15'
                 }`}
               />
             ))}
@@ -316,21 +307,29 @@ export const TutorialOverlay: React.FC<TutorialOverlayProps> = ({
 
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={onPrevStep}
               disabled={isFirstStep}
-              className={`px-2.5 py-1 text-xs font-mono rounded-lg border transition-colors ${
+              className={`h-8 px-3 text-xs font-sans font-medium rounded-lg border inline-flex items-center gap-1.5 transition-colors duration-150 ${
                 isFirstStep
-                  ? 'border-slate-800 text-slate-600 cursor-not-allowed'
-                  : 'border-slate-700 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer'
+                  ? 'border-[#eef0f5]/[0.06] text-[#7a8296] cursor-not-allowed'
+                  : 'border-[#eef0f5]/10 text-[#a3a9b8] hover:text-[#eef0f5] hover:bg-[#1a1e28] cursor-pointer'
               }`}
             >
-              ← Back
+              <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
+              <span>Back</span>
             </button>
             <button
+              type="button"
               onClick={onNextStep}
-              className="px-3 py-1 text-xs font-mono font-bold rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 transition-colors cursor-pointer"
+              className="h-8 px-3 text-xs font-sans font-medium rounded-lg bg-[#eef0f5] hover:bg-white text-[#07080d] inline-flex items-center gap-1.5 transition-colors duration-150 cursor-pointer"
             >
-              {isLastStep ? 'Finish Guide ✓' : 'Next →'}
+              <span>{isLastStep ? 'Finish guide' : 'Next'}</span>
+              {isLastStep ? (
+                <Check className="w-3.5 h-3.5" strokeWidth={1.5} />
+              ) : (
+                <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+              )}
             </button>
           </div>
         </div>

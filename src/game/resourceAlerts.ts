@@ -86,32 +86,32 @@ export function detectCriticalResourceNotifications(
       if (id === 'power') {
         notifications.push({
           id: 'power',
-          label: 'POWER CRITICAL',
-          bannerText: `Power at ${nextMeters.power.pct}% — shed heavy loads or build Solar/Kilopower!`,
-          speechText: 'ARIA alert: Power is critical! Check battery reserves and shed heavy loads.',
+          label: 'Power critical',
+          bannerText: `Power at ${nextMeters.power.pct}% — shed heavy loads or add Solar or Kilopower backup.`,
+          speechText: 'ARIA alert: Power is critical. Check battery reserves and shed heavy loads.',
         });
       } else if (id === 'life_support') {
         const { oxygenStatus, waterStatus } = getOxygenAndWaterStatuses(state);
         const detail =
           oxygenStatus === 'red' && waterStatus === 'red'
-            ? 'Oxygen and Water are critically low!'
+            ? 'Oxygen and Water are critically low.'
             : oxygenStatus === 'red'
-            ? 'Oxygen reserve is critically low!'
+            ? 'Oxygen reserve is critically low.'
             : waterStatus === 'red'
-            ? 'Water reserve is critically low!'
-            : 'Life Support reserves are critically low!';
+            ? 'Water reserve is critically low.'
+            : 'Life Support reserves are critically low.';
         notifications.push({
           id: 'life_support',
-          label: 'O₂ / WATER CRITICAL',
-          bannerText: `${detail} Check grid power and Recycler.`,
+          label: 'O₂ / Water critical',
+          bannerText: `${detail} Check grid power and the Recycler.`,
           speechText: `ARIA alert: ${detail} Check life support power right away.`,
         });
       } else if (id === 'food') {
         notifications.push({
           id: 'food',
-          label: 'FOOD CRITICAL',
-          bannerText: `Rations critically low (${nextMeters.food.amountText}) — check Greenhouse!`,
-          speechText: 'ARIA alert: Food rations are critically low! Check your greenhouse.',
+          label: 'Food critical',
+          bannerText: `Rations critically low (${nextMeters.food.amountText}) — check the Greenhouse.`,
+          speechText: 'ARIA alert: Food rations are critically low. Check your greenhouse.',
         });
       }
     }

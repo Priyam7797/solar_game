@@ -7,6 +7,22 @@
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
+:root {
+  --surface-deep: #07080d;
+  --surface-bg: #0b0d14;
+  --surface-card: #11141c;
+  --surface-raised: #1a1e28;
+  --hairline: rgba(238, 240, 245, 0.08);
+  --text-primary: #eef0f5;
+  --text-secondary: #a3a9b8;
+  --text-muted: #7a8296;
+  --accent-sky: #38bdf8;
+  --sem-positive: #4cc38a;
+  --sem-warning: #e5a93b;
+  --sem-negative: #e5484d;
+  --ease-ui: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 html, body, #root {
   width: 100%;
   height: 100%;
@@ -15,8 +31,8 @@ html, body, #root {
   overflow: hidden;
   user-select: none;
   font-family: var(--font-sans);
-  background-color: #030712;
-  color: #f3f4f6;
+  background-color: var(--surface-deep);
+  color: var(--text-primary);
 }
 
 /* Tabular numerals everywhere for metrics and timers */
@@ -24,20 +40,20 @@ html, body, #root {
   font-variant-numeric: tabular-nums;
 }
 
-/* Custom scrollbars for modals */
+/* Custom scrollbars matching Ink ramp */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(11, 13, 20, 0.8);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.5);
+  background: rgba(122, 130, 150, 0.35);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.8);
+  background: rgba(163, 169, 184, 0.55);
 }
 
 @keyframes solarHazardBreathe {
@@ -50,50 +66,50 @@ html, body, #root {
 }
 
 .animate-solar-hazard {
-  animation: solarHazardBreathe 2.8s ease-in-out infinite;
+  animation: solarHazardBreathe 2.8s var(--ease-ui) infinite;
 }
 
 @keyframes resourcePulseGreen {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.28);
+    box-shadow: 0 0 0 0 rgba(76, 195, 138, 0.22);
   }
   50% {
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
+    box-shadow: 0 0 0 2px rgba(76, 195, 138, 0.12);
   }
 }
 
 @keyframes resourcePulseYellow {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.45);
-    border-color: rgba(245, 158, 11, 0.55);
+    box-shadow: 0 0 0 0 rgba(229, 169, 59, 0.36);
+    border-color: rgba(229, 169, 59, 0.45);
   }
   50% {
-    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
-    border-color: rgba(251, 191, 36, 0.92);
+    box-shadow: 0 0 0 3px rgba(229, 169, 59, 0.16);
+    border-color: rgba(229, 169, 59, 0.78);
   }
 }
 
 @keyframes resourcePulseRed {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.65);
-    border-color: rgba(244, 63, 94, 0.72);
+    box-shadow: 0 0 0 0 rgba(229, 72, 77, 0.48);
+    border-color: rgba(229, 72, 77, 0.58);
   }
   50% {
-    box-shadow: 0 0 0 5px rgba(244, 63, 94, 0.25);
-    border-color: rgba(251, 113, 133, 1);
+    box-shadow: 0 0 0 4px rgba(229, 72, 77, 0.2);
+    border-color: rgba(229, 72, 77, 0.88);
   }
 }
 
 .animate-resource-pulse-green {
-  animation: resourcePulseGreen 3.4s ease-in-out infinite;
+  animation: resourcePulseGreen 3.4s var(--ease-ui) infinite;
 }
 
 .animate-resource-pulse-yellow {
-  animation: resourcePulseYellow 1.8s ease-in-out infinite;
+  animation: resourcePulseYellow 1.8s var(--ease-ui) infinite;
 }
 
 .animate-resource-pulse-red {
-  animation: resourcePulseRed 1s ease-in-out infinite;
+  animation: resourcePulseRed 1.1s var(--ease-ui) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

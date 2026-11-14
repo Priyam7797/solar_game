@@ -1,0 +1,65 @@
+{
+  "notes": "Data-driven 30-60 second crisis puzzles with 1-fail hints, recovery setbacks, and 'What would a real mission planner do?' explanations.",
+  "puzzles": {
+    "solar_flare": {
+      "id": "solar_flare",
+      "title": "Solar Flare Alert: Route Storm Shielding!",
+      "durationSec": 45,
+      "puzzleType": "shield_routing",
+      "intro": "High-energy protons from a NASA DONKI solar flare are sweeping across the outpost! Match the 3 shield grid power sliders to block the incoming proton beam direction before dose spikes.",
+      "hint": "Look at the target Shield Sectors bar: balance North, Core, and Hab shields so every sector meets its green target total without exceeding your 100% power budget!",
+      "realPlannerAction": "Real NASA flight controllers halt all outdoor spacewalks, route crew to hydrogen-rich water walls inside storm shelters, and power down non-essential science instruments.",
+      "setbackMessage": "The proton wave grazed the outer hull (+14 mSv crew dose), but the crew sheltered safely and recovered. Next time, keep backup battery ready for shield routing!"
+    },
+    "dust_storm": {
+      "id": "dust_storm",
+      "title": "Dust Storm Wall: Allocate Emergency Power!",
+      "durationSec": 45,
+      "puzzleType": "power_allocation",
+      "intro": "Swirling Martian dust has cut solar power to 30%! Distribute your scarce emergency kW budget across Life Support, Heating, and Greenhouse so crew stays safe.",
+      "hint": "Life Support (O2 & Water) and Habitat Heating ALWAYS come before Greenhouse grow lights during a short dust storm!",
+      "realPlannerAction": "Real planners shed non-critical science and lighting loads first, preserving life-support fans and thermal heaters until winds clear solar arrays.",
+      "setbackMessage": "Batteries dipped low and a batch of lettuce slowed down (-12 kWh), but life support held firm! Always protect O2 and heating first."
+    },
+    "power_failure": {
+      "id": "power_failure",
+      "title": "Grid Brownout: Reconnect Circuit Breakers!",
+      "durationSec": 45,
+      "puzzleType": "circuit_reconnect",
+      "intro": "A sudden load spike tripped the main power bus! Toggle the 4 circuit breakers in order to rebuild a steady path from Backup Power to Life Support without overloading.",
+      "hint": "Turn ON Main Bus and Battery Tie FIRST, keep Heavy Drills OFF, then switch ON Life Support!",
+      "realPlannerAction": "Mission Control restores power sequentially from smallest critical load to largest, avoiding a second surge trip.",
+      "setbackMessage": "Crew ran on emergency helmet O2 for a few minutes (-10 kg O2) while rebooting the bus — remember to shed heavy loads before reconnecting!"
+    },
+    "micrometeoroid_leak": {
+      "id": "micrometeoroid_leak",
+      "title": "Hull Pressure Drop: Patch Micrometeoroid Leaks!",
+      "durationSec": 40,
+      "puzzleType": "patch_leak",
+      "intro": "A tiny grain of space rock pinged the habitat roof! Click all 3 flashing breach tiles on the hull map to seal them with quick-set patch resin.",
+      "hint": "Scan the red-pulsing hull grid squares and tap each breach once to lock the pressure seal!",
+      "realPlannerAction": "Astronauts isolate the affected module hatch, locate acoustic hissing leaks with ultrasonic sensors, and apply Kapton/epoxy patch kits.",
+      "setbackMessage": "Cabin pressure dipped before the last seal set (-12 kg O2), but emergency tanks refilled the habitat smoothly!"
+    },
+    "recycler_jam": {
+      "id": "recycler_jam",
+      "title": "ECLSS Jam: Rotate Water & O2 Pipes!",
+      "durationSec": 45,
+      "puzzleType": "pipe_rotation",
+      "intro": "Mineral buildup jammed the ECLSS water filter loop! Click pipe tiles on the 3×3 manifold to rotate them so water flows cleanly from INTAKE (top-left) to CLEAN TANK (bottom-right).",
+      "hint": "Start from the top-left INTAKE tile and twist each pipe elbow so its glowing cyan flow reaches the bottom-right CLEAN TANK!",
+      "realPlannerAction": "ISS flight engineers bypass the clogged filter bed onto a backup distillation loop while astronauts swap the cartridge.",
+      "setbackMessage": "Backup filters caught the overflow (-18 L water), keeping crew hydrated while the main line cleared!"
+    },
+    "crop_problem": {
+      "id": "crop_problem",
+      "title": "Greenhouse Alert: Rescue Wilting Crops!",
+      "durationSec": 40,
+      "puzzleType": "crop_rescue",
+      "intro": "Leaves are drooping in the Bio-Dome! Use the NASA Garden Guide rules to pick the right LED spectrum, misting schedule, and airflow fix.",
+      "hint": "Check the Garden Guide: NASA Veggie plants love 16h Red+Blue LED light and Aeroponic Mist (too much flood water drowns roots in space!).",
+      "realPlannerAction": "NASA botanists inspect root-zone oxygen, adjust LED photoperiods, and balance nutrient misting rather than flooding plant pillows.",
+      "setbackMessage": "A few outer leaves yellowed (-2 kg fresh veggies), but new shoots sprouted healthy once misting stabilized!"
+    }
+  }
+}

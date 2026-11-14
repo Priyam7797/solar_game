@@ -1,0 +1,115 @@
+{
+  "notes": "10 curated Astronaut Health Cards based on real published NASA Open Science Data Repository (OSDR / GeneLab) and NASA Human Research Program findings, written at a grade 3-6 reading level.",
+  "cards": [
+    {
+      "id": "osdr_card_1",
+      "osdrId": "OSD-575 / NASA HRP",
+      "category": "Radiation",
+      "title": "Why Thick Soil Shields Cosmic Rays",
+      "finding": "High-energy space radiation can damage astronaut cells and DNA. Packed Moon or Mars soil (regolith) and water tanks absorb particles much better than thin metal walls.",
+      "gameplayLink": "Explains why sintering a 1m regolith roof and entering the Storm Shelter drastically cuts Crew Dose.",
+      "sourceName": "NASA Open Science Data Repository (OSDR) — Space Radiation Biology",
+      "url": "https://osdr.nasa.gov/bio/",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_2",
+      "osdrId": "OSD-105 / ISS Bone",
+      "category": "Bones",
+      "title": "Bones Lose Strength in Low Gravity",
+      "finding": "Astronauts in weightlessness can lose ~1% of bone mineral density per month without daily resistive exercise, Vitamin D, and mineral-rich nutrition.",
+      "gameplayLink": "Fresh crops from your Greenhouse supply key minerals alongside crew morale.",
+      "sourceName": "NASA OSDR — Skeletal Adaptation Studies",
+      "url": "https://osdr.nasa.gov/bio/",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_3",
+      "osdrId": "OSD-103 / Muscle",
+      "category": "Muscle",
+      "title": "Muscles Need Work on Long Trips",
+      "finding": "When gravity is weaker (1/6 on the Moon, 3/8 on Mars), leg and back muscles shrink unless crews work out up to 2 hours every sol.",
+      "gameplayLink": "Keeping Life Support oxygen steady lets astronauts exercise safely without getting dizzy.",
+      "sourceName": "NASA OSDR — Muscle Atrophy Transcriptomics",
+      "url": "https://osdr.nasa.gov/bio/",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_4",
+      "osdrId": "NASA Twins Study",
+      "category": "Immune",
+      "title": "Space Stress Affects Immune Cells",
+      "finding": "Comparing astronaut Scott Kelly in space to his twin Mark on Earth showed spaceflight changes how immune genes switch on and off, though most return to normal back on Earth.",
+      "gameplayLink": "High stress from power blackouts or radiation spikes weakens crew health faster.",
+      "sourceName": "NASA Twins Study / Garrett-Bakelman et al. (Science 2019)",
+      "url": "https://www.nasa.gov/humans-in-space/twins-study/",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_5",
+      "osdrId": "OSD-242 / SANS",
+      "category": "Vision",
+      "title": "Fluid Shifts Change Astronaut Eyes",
+      "finding": "In low gravity, body fluids float upward toward the head, gently pressing on the back of the eyes (called SANS: Spaceflight-Associated Neuro-ocular Syndrome).",
+      "gameplayLink": "Balanced hydration in your Life Support meter helps flight surgeons monitor crew vitals.",
+      "sourceName": "NASA OSDR — Ocular & Fluid Shift Studies",
+      "url": "https://osdr.nasa.gov/bio/",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_6",
+      "osdrId": "OSD-223 / Veggie",
+      "category": "Plants",
+      "title": "Red & Blue LEDs Grow Space Salad",
+      "finding": "ISS Veggie experiments found that red + blue LED lights help red romaine lettuce grow nutritious leaves while using far less electricity than white lamps.",
+      "gameplayLink": "Setting LED light cycles in the Garden Guide gives your Greenhouse a yield bonus!",
+      "sourceName": "NASA OSDR / ISS Veggie Plant Growth Experiments",
+      "url": "https://www.nasa.gov/mission_pages/station/research/experiments/explorer/Investigation.html?#id=374",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_7",
+      "osdrId": "OSD-370 / Root Zone",
+      "category": "Plants",
+      "title": "Roots Need Air Pockets in Microgravity",
+      "finding": "Too much water in space soil drowns plant roots because water sticks around roots instead of draining down. Misting (aeroponics) and wicks keep roots breathing.",
+      "gameplayLink": "Over-watering or ignoring Garden Guide warnings slows crop growth!",
+      "sourceName": "NASA OSDR — Spaceflight Root Hypoxia Studies",
+      "url": "https://osdr.nasa.gov/bio/",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_8",
+      "osdrId": "OSD-140 / Shielding",
+      "category": "Radiation",
+      "title": "Water Tanks Are Secret Radiation Shields",
+      "finding": "Hydrogen-rich materials like water and polyethylene plastic block fast solar protons without creating messy secondary radiation inside metal hulls.",
+      "gameplayLink": "Your Subterranean Storm Shelter lines crew bunks with water tanks for 96% shielding.",
+      "sourceName": "NASA OSDR — High-Z Particle & Proton Dosimetry",
+      "url": "https://osdr.nasa.gov/bio/",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_9",
+      "osdrId": "OSD-366 / Circadian",
+      "category": "Sleep",
+      "title": "14-Day Nights Confuse Crew Body Clocks",
+      "finding": "On the Moon or Mars, strange sunrise times disrupt circadian rhythms. Tunable LED cabin lighting helps astronauts sleep deeply and stay sharp during emergencies.",
+      "gameplayLink": "Maintaining Habitat power preserves sleep lighting and crew decision readiness.",
+      "sourceName": "NASA OSDR — Circadian & Behavioral Health",
+      "url": "https://osdr.nasa.gov/bio/",
+      "badge": "ARCHIVED"
+    },
+    {
+      "id": "osdr_card_10",
+      "osdrId": "OSD-120 / Microbiome",
+      "category": "Life Support",
+      "title": "Clean Air & Recycled Water Need Microbe Checks",
+      "finding": "Astronauts recycle up to 95-98% of cabin water and sweat! Helpful filters keep harmless microbes balanced so pipes do not clog.",
+      "gameplayLink": "Explains why ECLSS Water & O2 Recyclers need periodic maintenance and power.",
+      "sourceName": "NASA OSDR — Closed-Loop ECLSS Microbiology",
+      "url": "https://osdr.nasa.gov/bio/",
+      "badge": "ARCHIVED"
+    }
+  ]
+}

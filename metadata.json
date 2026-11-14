@@ -1,0 +1,6 @@
+{
+  "name": "Aethel Outpost: Space Habitat Engineering Simulator",
+  "description": "An interactive STEM 3D simulation game where students design, build, and run lunar and Martian outposts, balancing real-world life support, radiation shielding, power grids, and food production trade-offs.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

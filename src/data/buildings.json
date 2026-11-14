@@ -1,0 +1,105 @@
+{
+  "notes": "Exactly 10 build menu modules. Every option has an explicit Cost Card (GAIN, PAY, RISK) and sol-time build duration so no choice is ever free or strictly optimal.",
+  "buildings": [
+    {
+      "id": "solar_array",
+      "name": "Solar Panels",
+      "category": "power",
+      "buildTimeSols": 0.35,
+      "cost": { "regolithKg": 20, "metalKg": 75, "batteryKwh": 10 },
+      "gain": "+12 kW clean daytime electricity to run life support and charge batteries.",
+      "pay": "75 kg Metal, 20 kg Regolith, 10 kWh build energy, 0.35 Sols build time.",
+      "risk": "Produces 0 kW during the 14-day lunar night or heavy Martian dust storms, and loses power when coated in dust."
+    },
+    {
+      "id": "battery_bank",
+      "name": "Battery Bank",
+      "category": "power",
+      "buildTimeSols": 0.4,
+      "cost": { "regolithKg": 35, "metalKg": 110, "batteryKwh": 12 },
+      "gain": "+80 kWh extra battery storage to survive nights and sudden storms.",
+      "pay": "110 kg Metal, 35 kg Regolith, -0.3 kW control drain, 0.4 Sols build time.",
+      "risk": "Does NOT generate new energy! Without enough solar or backup generators, larger batteries still drain empty."
+    },
+    {
+      "id": "kilopower_rtg",
+      "name": "Kilopower Backup",
+      "category": "power",
+      "buildTimeSols": 0.75,
+      "cost": { "regolithKg": 140, "metalKg": 260, "batteryKwh": 25 },
+      "gain": "+10 kW steady 24/7 nuclear fission power — ignores lunar nights and Martian dust storms!",
+      "pay": "260 kg Metal, 140 kg Regolith, 25 kWh startup energy, 0.75 Sols build time.",
+      "risk": "Very heavy metal cost slows down other builds and generates extra waste heat that stresses life-support cooling."
+    },
+    {
+      "id": "life_support_moxie",
+      "name": "Water & O2 Recycler",
+      "category": "life_support",
+      "buildTimeSols": 0.5,
+      "cost": { "regolithKg": 50, "metalKg": 140, "batteryKwh": 20 },
+      "gain": "+4.0 kg/sol breathable Oxygen and boosts closed-loop water recovery toward 98%.",
+      "pay": "140 kg Metal, -5.0 kW continuous power, -1.0 L/sol process water, 0.5 Sols build time.",
+      "risk": "High constant power draw! If your battery hits 0%, the recycler shuts off and oxygen drops fast."
+    },
+    {
+      "id": "aeroponic_greenhouse",
+      "name": "Greenhouse",
+      "category": "food",
+      "buildTimeSols": 0.6,
+      "cost": { "regolithKg": 80, "metalKg": 165, "batteryKwh": 20 },
+      "gain": "Grows fresh crops (+2.6 kg/sol food) plus +1.5 kg/sol bonus Oxygen from plant photosynthesis.",
+      "pay": "165 kg Metal, -4.5 kW LED grow-light power, -3.0 L/sol water, 0.6 Sols build time.",
+      "risk": "Plants thirst for water and power. Neglecting the Garden Guide or losing power can wilt crops overnight."
+    },
+    {
+      "id": "storm_shelter",
+      "name": "Radiation Shelter",
+      "category": "shield",
+      "buildTimeSols": 0.8,
+      "cost": { "regolithKg": 320, "metalKg": 220, "batteryKwh": 30 },
+      "gain": "Raises Shielding to 96% when crew bunkers inside, blocking deadly solar proton storms.",
+      "pay": "220 kg Metal, 320 kg Regolith, -1.5 kW life-support vent power, 0.8 Sols build time.",
+      "risk": "Expensive in regolith and metal, and while crew is bunkered, outdoor research and repairs pause."
+    },
+    {
+      "id": "dust_mitigator",
+      "name": "Dust Cleaner / Seals",
+      "category": "resource",
+      "buildTimeSols": 0.45,
+      "cost": { "regolithKg": 45, "metalKg": 120, "batteryKwh": 15 },
+      "gain": "Cuts solar dust buildup by 65% and unlocks automatic electrostatic panel wiping.",
+      "pay": "120 kg Metal, -2.0 kW electrostatic coil power, 0.45 Sols build time.",
+      "risk": "Consumes steady electricity every sol even on calm, dust-free days."
+    },
+    {
+      "id": "comms_antenna",
+      "name": "Comms Antenna",
+      "category": "command",
+      "buildTimeSols": 0.4,
+      "cost": { "regolithKg": 30, "metalKg": 100, "batteryKwh": 12 },
+      "gain": "Doubles solar flare warning lead time and speeds up Mission Control uplink & Science data.",
+      "pay": "100 kg Metal, -2.2 kW transmitter power, 0.4 Sols build time.",
+      "risk": "Does not shorten Mars speed-of-light delay! Extra antenna draw increases nighttime battery drain."
+    },
+    {
+      "id": "rover_garage",
+      "name": "Rover Garage",
+      "category": "research",
+      "buildTimeSols": 0.65,
+      "cost": { "regolithKg": 90, "metalKg": 170, "batteryKwh": 20 },
+      "gain": "Unlocks surface Rover Trips to gather regolith, metal alloy, ice, and Science Points.",
+      "pay": "170 kg Metal, -2.5 kW charging bay power, 0.65 Sols build time.",
+      "risk": "Every Rover Trip spends Oxygen & Battery and exposes crew to higher radiation if launched during a flare!"
+    },
+    {
+      "id": "regolith_sinterer",
+      "name": "Regolith Sinterer",
+      "category": "shield",
+      "buildTimeSols": 0.7,
+      "cost": { "regolithKg": 210, "metalKg": 135, "batteryKwh": 25 },
+      "gain": "Melts local soil into thick radiation-blocking domes (+35% baseline Shield) & mines regolith.",
+      "pay": "210 kg Regolith, 135 kg Metal, -3.5 kW microwave laser power, 0.7 Sols build time.",
+      "risk": "Heavy laser power draw can trigger a grid brownout if built before your power surplus is ready."
+    }
+  ]
+}

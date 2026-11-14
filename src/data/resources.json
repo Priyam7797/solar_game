@@ -1,0 +1,59 @@
+{
+  "notes": "Core 3 resources + 1 safety meter. Real NASA baselines (0.84 kg O2/day, 2.5 L water/day, 95% ECLSS recovery, 250 mSv 6-month ALARA limit) are paired with kid-friendly combined percentages and 90-day initial food reserves.",
+  "coreMeters": [
+    {
+      "id": "power",
+      "label": "POWER",
+      "unit": "kWh",
+      "rateUnit": "kW",
+      "initialBatteryKwh": 120,
+      "initialCapacityKwh": 160,
+      "lowThresholdPct": 35,
+      "criticalThresholdPct": 15,
+      "description": "Battery energy stored from solar panels and backup power.",
+      "chainReactionWarning": "Low Power! Life support recycling slows down, greenhouse lights dim, and shield systems drain faster."
+    },
+    {
+      "id": "life_support",
+      "label": "LIFE SUPPORT",
+      "unit": "%",
+      "rateUnit": "%/sol",
+      "initialOxygenKg": 90,
+      "oxygenMaxKg": 150,
+      "o2PerCrewSolKg": 0.84,
+      "initialWaterLiters": 160,
+      "waterMaxLiters": 250,
+      "waterPerCrewSolL": 2.5,
+      "baseRecyclingEfficiency": 0.95,
+      "lowThresholdPct": 45,
+      "criticalThresholdPct": 22,
+      "description": "Combines breathable Oxygen (O2) and clean Water (H2O) into one life-support meter. Tap to see both!",
+      "realVsSimplifiedNote": "NASA tracks O2 partial pressure and potable water tanks separately; combined into one bar for grades 3-6 clarity with an expandable O2/H2O view."
+    },
+    {
+      "id": "food",
+      "label": "FOOD",
+      "unit": "days",
+      "rateUnit": "meals/sol",
+      "initialRationsDays": 90,
+      "foodPerCrewSolKg": 0.8,
+      "lowThresholdSols": 30,
+      "criticalThresholdSols": 12,
+      "description": "Stored astronaut meal packs (90 days at start, non-renewable) plus fresh veggies grown in your greenhouse.",
+      "realVsSimplifiedNote": "Starting 90-day ration count gives kids clear urgency to build and tend a greenhouse before stored packs run out."
+    }
+  ],
+  "safetyMeter": {
+    "id": "shield",
+    "label": "SHIELD",
+    "unit": "%",
+    "maxSafeCrewDoseMsv": 250,
+    "baseHullShieldPct": 32,
+    "regolithUpgradeShieldBonusPct": 38,
+    "shelterActiveShieldPct": 96,
+    "lowThresholdPct": 40,
+    "criticalThresholdPct": 25,
+    "description": "How strongly your habitat blocks cosmic rays and solar proton storms. Tied to your crew's hidden cumulative radiation dose (250 mSv NASA limit).",
+    "realVsSimplifiedNote": "Real flight surgeons track cumulative effective dose in millisieverts (mSv); shown as a simple Shield % bar while tracking true mSv internally for debriefs."
+  }
+}

@@ -1,0 +1,136 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  user-select: none;
+  font-family: var(--font-sans);
+  background-color: #030712;
+  color: #f3f4f6;
+}
+
+/* Tabular numerals everywhere for metrics and timers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom scrollbars for modals */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.8);
+}
+
+@keyframes solarHazardBreathe {
+  0%, 100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-solar-hazard {
+  animation: solarHazardBreathe 2.8s ease-in-out infinite;
+}
+
+@keyframes resourcePulseGreen {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.28);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.14);
+  }
+}
+
+@keyframes resourcePulseYellow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.45);
+    border-color: rgba(245, 158, 11, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.2);
+    border-color: rgba(251, 191, 36, 0.92);
+  }
+}
+
+@keyframes resourcePulseRed {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.65);
+    border-color: rgba(244, 63, 94, 0.72);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(244, 63, 94, 0.25);
+    border-color: rgba(251, 113, 133, 1);
+  }
+}
+
+.animate-resource-pulse-green {
+  animation: resourcePulseGreen 3.4s ease-in-out infinite;
+}
+
+.animate-resource-pulse-yellow {
+  animation: resourcePulseYellow 1.8s ease-in-out infinite;
+}
+
+.animate-resource-pulse-red {
+  animation: resourcePulseRed 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-solar-hazard,
+  .animate-resource-pulse-green,
+  .animate-resource-pulse-yellow,
+  .animate-resource-pulse-red {
+    animation: none;
+  }
+}
+
+@media print {
+  html, body, #root {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .print-report-sheet,
+  .print-report-sheet * {
+    visibility: visible !important;
+  }
+
+  .print-report-sheet {
+    position: fixed !important;
+    inset: 0 !important;
+    display: block !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    padding: 24px !important;
+    font-family: var(--font-sans);
+    overflow: visible !important;
+  }
+}
+

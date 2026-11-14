@@ -1,0 +1,55 @@
+{
+  "notes": "4 greenhouse crops inspired by NASA Veggie and Advanced Plant Habitat experiments on the ISS. Includes real NASA facts and Garden Guide bonus rules.",
+  "recommendedSettings": {
+    "ledCycle": "16h-red-blue",
+    "wateringMode": "aeroponic-mist",
+    "compostEnabled": true
+  },
+  "nasaVeggieFact": "In 2015, NASA astronauts aboard the International Space Station harvested and ate the very first space-grown Outredgeous red romaine lettuce from the Veggie chamber using red, blue, and green LED lights!",
+  "crops": [
+    {
+      "id": "lettuce",
+      "name": "Outredgeous Lettuce",
+      "icon": "🥬",
+      "growthSols": 3,
+      "yieldKg": 2.2,
+      "waterLPerSol": 0.7,
+      "powerKw": 1.0,
+      "idealLed": "16h-red-blue",
+      "nasaFact": "Grown in NASA's ISS Veggie pillow system; fast leafy greens give astronauts fresh crunch and antioxidants."
+    },
+    {
+      "id": "radish",
+      "name": "Cherry Belle Radish",
+      "icon": "🫜",
+      "growthSols": 2.5,
+      "yieldKg": 2.5,
+      "waterLPerSol": 0.8,
+      "powerKw": 1.1,
+      "idealLed": "16h-red-blue",
+      "nasaFact": "In 2020, NASA astronaut Kate Rubins harvested 20 radishes in the Advanced Plant Habitat in just 27 days!"
+    },
+    {
+      "id": "potato",
+      "name": "Dwarf Space Potato",
+      "icon": "🥔",
+      "growthSols": 5,
+      "yieldKg": 4.8,
+      "waterLPerSol": 1.1,
+      "powerKw": 1.4,
+      "idealLed": "16h-red-blue",
+      "nasaFact": "Potatoes pack high calories per square meter — NASA and CIP tested compact dwarf varieties for future Mars habitats."
+    },
+    {
+      "id": "beans",
+      "name": "Dwarf Lima Beans",
+      "icon": "🫘",
+      "growthSols": 4,
+      "yieldKg": 3.4,
+      "waterLPerSol": 0.9,
+      "powerKw": 1.2,
+      "idealLed": "16h-red-blue",
+      "nasaFact": "Legumes fix nitrogen with helpful root microbes and give crews plant-based protein without shipping heavy Earth meat."
+    }
+  ]
+}

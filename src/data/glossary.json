@@ -1,0 +1,45 @@
+{
+  "notes": "Plain-language grade 3-6 glossary for tap-to-open 'What does this mean?' tooltips.",
+  "terms": {
+    "sol": {
+      "term": "Sol",
+      "short": "One full day-and-night cycle on another world.",
+      "detail": "On Mars, one sol lasts 24 hours and 39 minutes — almost the same as an Earth day! In this trainer, we also count outpost mission days in Sols."
+    },
+    "radiation dose": {
+      "term": "Radiation Dose (mSv)",
+      "short": "How much invisible space energy hits an astronaut's body.",
+      "detail": "Measured in millisieverts (mSv). Earth's air and magnetic field shield us, but on the Moon and Mars, solar storms can push crew dose near NASA's 250 mSv safety limit unless shielded."
+    },
+    "regolith": {
+      "term": "Regolith",
+      "short": "The loose crushed rock and dust covering the Moon and Mars.",
+      "detail": "Moon regolith is sharp like tiny glass splinters. Astronauts can melt ('sinter') it with microwaves to build thick 1-meter radiation domes!"
+    },
+    "eclss": {
+      "term": "ECLSS (Life Support)",
+      "short": "Environmental Control and Life Support System — the base's air and water recycler.",
+      "detail": "It scrubs out breathed-out CO2, splits water into fresh Oxygen (O2), and recycles 95-98% of shower and sweat water!"
+    },
+    "proton flux": {
+      "term": "Proton Flux (pfu)",
+      "short": "How many fast sun-particles are zooming past your base each second.",
+      "detail": "When NASA's DONKI satellites spot a huge flare, proton flux jumps from 2 pfu to over 100 or 1,000 pfu — time to shelter!"
+    },
+    "rtg": {
+      "term": "Kilopower / RTG",
+      "short": "A compact nuclear power unit that works day and night, even in dust storms.",
+      "detail": "Unlike solar panels, nuclear fission reactors (like NASA's Kilopower) keep making electricity during 14-day lunar nights!"
+    },
+    "hydroponics": {
+      "term": "Hydroponics / Aeroponics",
+      "short": "Growing healthy vegetables without soil using mist and nutrients.",
+      "detail": "Aeroponic misters use up to 95% less water than dirt farming and give astronauts fresh salad plus extra oxygen!"
+    },
+    "light-time delay": {
+      "term": "Light-Time Comms Delay",
+      "short": "How long radio messages take to travel through space at the speed of light.",
+      "detail": "Messages to the Moon take ~1.3 seconds. Messages to Mars take 3 to 22 minutes EACH WAY depending on where Earth and Mars are in orbit!"
+    }
+  }
+}
